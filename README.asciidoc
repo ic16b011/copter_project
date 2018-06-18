@@ -1,6 +1,7 @@
 = Generic Basic TI-RTOS Project
 
 You may use this project as a basis for your own needs
+Clone this repo and all of its sub-modules by issueing: git clone --recursive <url>
 
 == Additional Activated Features
 
