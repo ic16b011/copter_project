@@ -1,0 +1,21 @@
+= Generic Basic TI-RTOS Project
+
+You may use this project as a basis for your own needs
+
+== Additional Activated Features
+
+. NDK Networking stack - Deacticate in the '.cfg' file if required.
+. 40kB of System Heap (Used by Tasks to allocate stack memory) - Alter in '.cfg' file if needed.
+. Software Interrupts - Change in '.cfg' file if needed.
+
+== Example Tasks
+
+. Blink Tasks using the clock module
+. UART Echo Task
+
+== Additonal Configuration possibilites
+
+. Define 'CAN_0' in 'local_inc/EK_TM4C1294XL.h' to make use of the CAN controller and remap the UART pins from UART 0 to UART 1.
+. Define 'I2CM_7' and 'I2CM_8' as well as 'SSIM_2' and 'SSIM_3' in 'local_inc/EK_TM4C1294XL.h'  according to you needs.
+
+
