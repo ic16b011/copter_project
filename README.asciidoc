@@ -13,10 +13,11 @@ Clone this repo and all of its sub-modules by issueing: git clone --recursive <u
 
 . Blink Tasks using the clock module
 . UART Echo Task
+. TCP Echo Task
 
 == Additonal Configuration possibilites
 
-. Define 'CAN_0' in 'local_inc/EK_TM4C1294XL.h' to make use of the CAN controller and remap the UART pins from UART 0 to UART 1.
+. Define 'CAN_0' in 'local_inc/EK_TM4C1294XL.h' to make use of the CAN controller and remap the UART pins from UART 0 to UART 1. 'can_driver' submodule needed.
 . Define 'I2CM_7' and 'I2CM_8' as well as 'SSIM_2' and 'SSIM_3' in 'local_inc/EK_TM4C1294XL.h'  according to you needs.
 
 
