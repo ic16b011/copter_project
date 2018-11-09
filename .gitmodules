@@ -1,0 +1,3 @@
+[submodule "adc_driver"]
+	path = adc_driver
+	url = https://es.technikum-wien.at/ti-connected-launchpad/tirtos_adc_driver.git
