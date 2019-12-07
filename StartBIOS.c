@@ -33,6 +33,7 @@
 /* Application headers */
 #include <Blink_Task.h>
 #include <UART_Task.h>
+#include <RN4678.h>
 
 /*
  * NOTE: All local variables in main() will be discarded once BIOS_start() is called.
@@ -46,6 +47,8 @@ int main(void)
     /* Call board init functions. */
     ui32SysClock = Board_initGeneral(120*1000*1000);
     (void)ui32SysClock; // We don't really need this (yet)
+
+    init_bt();
 
     led_desc[0].port_base = GPIO_PORTN_BASE;
     led_desc[0].led = GPIO_PIN_1;
