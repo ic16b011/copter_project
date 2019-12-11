@@ -720,9 +720,9 @@ const UARTTiva_HWAttrs uartTivaHWAttrs[EK_TM4C1294XL_UARTCOUNT] = {
         .ringBufPtr  = uartTivaRingBuffer[0],
         .ringBufSize = sizeof(TIVA_RINGBUF_SIZE)
     },
-    {/* EK_TM4C1294XL_UART1 */
-        .baseAddr = UART2_BASE,
-        .intNum = INT_UART2,
+    {/* EK_TM4C1294XL_UART6 */
+        .baseAddr = UART6_BASE,
+        .intNum = INT_UART6,
         .intPriority = ~0,
         .flowControl = UART_FLOWCONTROL_NONE,
         .ringBufPtr  = uartTivaRingBuffer[1],
@@ -751,10 +751,10 @@ const UART_Config UART_config[] = {
 void EK_TM4C1294XL_initUART(void)
 {
     /* Enable and configure the peripherals used by the uart. */
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
-    GPIOPinConfigure(GPIO_PA0_U0RX);
-    GPIOPinConfigure(GPIO_PA1_U0TX);
-    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART6);
+    GPIOPinConfigure(GPIO_PP0_U6RX);
+    GPIOPinConfigure(GPIO_PP1_U6TX);
+    GPIOPinTypeUART(GPIO_PORTP_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
     /* Initialize the UART driver */
 #if TI_DRIVERS_UART_DMA
