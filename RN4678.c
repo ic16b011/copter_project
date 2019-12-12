@@ -6,6 +6,8 @@
  */
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <inc/hw_ints.h>
 #include <inc/hw_memmap.h>
@@ -20,6 +22,7 @@
 #include <xdc/runtime/System.h>
 #include <Board.h>
 #include <EK_TM4C1294XL.h>
+#include <xdc/runtime/Memory.h>
 
 #include "RN4678.h"
 
@@ -43,7 +46,6 @@
 #define STATUS1_PORT    GPIO_PORTQ_BASE
 #define STATUS2         GPIO_PIN_0
 #define STATUS2_PORT    GPIO_PORTQ_BASE
-
 
 
 void RN4678Fxn(UArg arg0, UArg arg1)
@@ -76,34 +78,99 @@ void RN4678Fxn(UArg arg0, UArg arg1)
     while(UARTBusy(UART6_BASE));
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
     UART_read(uart, &input, 4); // CMD sollte zurückkommen
+    System_printf("CMD\n");
+    System_flush();
     Task_sleep(5);
 
     // connect to target
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0b00010000);
     while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
     UART_write(uart, "C,0006668CB28E\r", sizeof("C,0006668CB28E\r"));
+    //UART_write(uart, "C,404E36B7BDCD\r", sizeof("C,404E36B7BDCD\r"));
     while(UARTBusy(UART6_BASE));
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-    UART_read(uart, &input, 4);
+    char check[16] = "";
+    UART_read(uart, &check, 16);
+    System_printf("C,...\n");
+    System_flush();
     Task_sleep(5);
 
     while((GPIOPinRead(STATUS2_PORT, STATUS2) != 0x00)||(GPIOPinRead(STATUS1_PORT, STATUS1) == 0x00));
-    System_printf("Connected");
+    System_printf("Connected\n");
+    System_flush();
 
+    while(UARTCharsAvail(UART6_BASE))
+    {
+        UART_read(uart, &buf, 1);
+    }
+    Task_sleep(5);
     // leave command mode
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
     while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
-    UART_write(uart, "---\r", sizeof("---\r"));
+    UART_write(uart, "---\r\n", sizeof("---\r\n"));
+    while(UARTBusy(UART6_BASE));
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-    UART_read(uart, &input, 1);
+    //UART_read(uart, &input, 4);
+    while(UARTCharsAvail(UART6_BASE))
+        {
+            UART_read(uart, &buf, 1);
+        }
     Task_sleep(5);
+
 
     Task_sleep(100);
 
+    System_printf("Begin data\n");
+    char toSend[16];
+
+        int speed = 1500;
+        int arm = 0;
+        int azimuth = 1500;
+        int pitch = 1500;
+        int roll = 1500;
+
+        toSend[0] = 0x24;
+        toSend[1] = 0x4D;
+        toSend[2] = 0x3C;
+        toSend[3] = 0x0A;
+        toSend[4] = 0xC8;
+
+        toSend[5] = pitch;
+        toSend[6] = (pitch >> 8);
+        toSend[7] = roll;
+        toSend[8] = (roll >> 8);
+        toSend[9] = speed;
+        toSend[10] = (speed >> 8);
+        toSend[11] = azimuth;
+        toSend[12] = (azimuth >> 8);
+
+        // arm
+            //b[13] = 0xe8;
+            //b[14] = 0x03;
+        // disarm
+        toSend[13] = 0xd0;
+        toSend[14] = 0x07;
+
+        char checksum = 0;
+
+        for (i = 3; i < 16 - 1; i++)
+            checksum ^= toSend[i];
+
+        toSend[15] = checksum;
+
+        int j = 0;
+        while(1)
+        {
+            GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
+            while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
+            UART_write(uart, toSend, (sizeof(toSend) / sizeof(char)));
+            while(UARTBusy(UART6_BASE));
+            GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
+            j++;
+            Task_sleep(100);
+        }
 
     // MAC Address of XMC: 0006668CB28E
-
-    while(1);
 }
 
 void init_bt()
@@ -161,7 +228,7 @@ void init_bt()
     GPIOPinWrite(SW_BTN_PORT, SW_BTN, 0b00000100);
 
     SysCtlDelay((120000000 / 1000) * 500);
-
+    SysCtlDelay((120000000 / 1000) * 5000);
 
     Error_init(&eb);
     Task_Params_init(&taskUARTParams);
