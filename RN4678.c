@@ -4,57 +4,44 @@
  *  Created on: 06.12.2019
  *      Author: Alex
  */
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <inc/hw_ints.h>
-#include <inc/hw_memmap.h>
-#include <inc/hw_types.h>
-#include <driverlib/gpio.h>
-#include <driverlib/pin_map.h>
-#include <driverlib/sysctl.h>
-#include <driverlib/uart.h>
-#include <ti/drivers/UART.h>
-#include <ti/sysbios/knl/Task.h>
-#include <xdc/runtime/Error.h>
-#include <xdc/runtime/System.h>
-#include <Board.h>
-#include <EK_TM4C1294XL.h>
-#include <xdc/runtime/Memory.h>
-
 #include "RN4678.h"
 
-#define SW_BTN          GPIO_PIN_2
-#define SW_BTN_PORT     GPIO_PORTD_BASE
-#define RST             GPIO_PIN_4
-#define RST_PORT        GPIO_PORTP_BASE
-#define RN4678_RTS      GPIO_PIN_5      // is CTS from TivaBoard
-#define RN4678_RTS_PORT GPIO_PORTP_BASE
-#define RN4678_CTS      GPIO_PIN_4      // is RTS from TivaBoard
-#define RN4678_CTS_PORT GPIO_PORTD_BASE
-#define U6RX            GPIO_PP0_U6RX
-#define U6RX_PIN        GPIO_PIN_0
-#define U6RX_PORT       GPIO_PORTP_BASE
-#define U6TX            GPIO_PP1_U6TX
-#define U6TX_PIN        GPIO_PIN_1
-#define U6TX_PORT       GPIO_PORTP_BASE
-#define WAKEUP          GPIO_PIN_7
-#define WAKEUP_PORT     GPIO_PORTM_BASE
-#define STATUS1         GPIO_PIN_3
-#define STATUS1_PORT    GPIO_PORTQ_BASE
-#define STATUS2         GPIO_PIN_0
-#define STATUS2_PORT    GPIO_PORTQ_BASE
+// send data packet
+void send_pac(UART_Handle *uart, char *data, uint8_t size)
+{
+    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
+    while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
+    UART_write(*uart, data, size);
+    while(UARTBusy(UART6_BASE));
+    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
+}
 
+// send commands to RN4678
+void start_com(UART_Handle *uart, char *cmd, uint8_t size, uint8_t retsize, char *input)
+{
+    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
+    while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
+    UART_write(*uart, cmd, size); // enter command mode
+    while(UARTBusy(UART6_BASE));
+    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
+    UART_read(*uart, &input, retsize); // CMD sollte zurückkommen
+    System_printf("%s\n", cmd);
+    System_flush();
+    Task_sleep(5);
+}
 
+// cyclic task for RN4678
 void RN4678Fxn(UArg arg0, UArg arg1)
 {
     UART_Handle uart;
     UART_Params uartParams;
-    char input[8] = { '\0' };
-    char buf[100] = { '\0' };
-    int i;
+
+    char cmdCmd[3] = "$$$"; // enter command mode
+    char connectCmd[15] = "C,0006668CB28E\r"; // connect to copter with MAC-address
+    char leaveCmd[5] = "---\r\n"; // leave command mode
+    char ret[16];
+
+    uint8_t i;
 
     /* Create a UART with data processing off.*/
     UART_Params_init(&uartParams);
@@ -71,115 +58,87 @@ void RN4678Fxn(UArg arg0, UArg arg1)
         System_abort("Error opening the UART");
     }
 
+
     // enter command mode with $$$
-    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0b00010000);
-    while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
-    UART_write(uart, "$$$", sizeof("$$$")); // enter command mode
-    while(UARTBusy(UART6_BASE));
-    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-    UART_read(uart, &input, 4); // CMD sollte zurückkommen
-    System_printf("CMD\n");
-    System_flush();
-    Task_sleep(5);
+    start_com(&uart, cmdCmd, sizeof(cmdCmd), 4, ret);
 
-    // connect to target
-    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0b00010000);
-    while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
-    UART_write(uart, "C,0006668CB28E\r", sizeof("C,0006668CB28E\r"));
-    //UART_write(uart, "C,404E36B7BDCD\r", sizeof("C,404E36B7BDCD\r"));
-    while(UARTBusy(UART6_BASE));
-    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-    char check[16] = "";
-    UART_read(uart, &check, 16);
-    System_printf("C,...\n");
-    System_flush();
-    Task_sleep(5);
-
-    while((GPIOPinRead(STATUS2_PORT, STATUS2) != 0x00)||(GPIOPinRead(STATUS1_PORT, STATUS1) == 0x00));
-    System_printf("Connected\n");
-    System_flush();
-
-    while(UARTCharsAvail(UART6_BASE))
+    if(strstr(ret, "CMD") != NULL)
     {
-        UART_read(uart, &buf, 1);
-    }
-    Task_sleep(5);
-    // leave command mode
-    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
-    while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
-    UART_write(uart, "---\r\n", sizeof("---\r\n"));
-    while(UARTBusy(UART6_BASE));
-    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-    //UART_read(uart, &input, 4);
-    while(UARTCharsAvail(UART6_BASE))
+        // connect to copter
+        start_com(&uart, connectCmd, sizeof(connectCmd), 16, ret);
+        if(strstr(ret, "CONNECT") != NULL)
         {
-            UART_read(uart, &buf, 1);
-        }
-    Task_sleep(5);
+            // wait for connected status
+            while((GPIOPinRead(STATUS2_PORT, STATUS2) != 0x00) || (GPIOPinRead(STATUS1_PORT, STATUS1) == 0x00));
+            System_printf("Connected\n");
+            System_flush();
 
+            // leave command mode
+            start_com(&uart, leaveCmd, sizeof(leaveCmd), 1, ret);
+
+            // flush UART In-Buffer
+            while(UARTCharsAvail(UART6_BASE))
+            {
+                UART_read(uart, &ret, 1);
+            }
+        }
+    }
 
     Task_sleep(100);
 
     System_printf("Begin data\n");
     char toSend[16];
+    int speed = 1500;
+    int arm = 0;
+    int azimuth = 1500;
+    int pitch = 1500;
+    int roll = 1500;
 
-        int speed = 1500;
-        int arm = 0;
-        int azimuth = 1500;
-        int pitch = 1500;
-        int roll = 1500;
+    toSend[0] = 0x24;
+    toSend[1] = 0x4D;
+    toSend[2] = 0x3C;
+    toSend[3] = 0x0A;
+    toSend[4] = 0xC8;
 
-        toSend[0] = 0x24;
-        toSend[1] = 0x4D;
-        toSend[2] = 0x3C;
-        toSend[3] = 0x0A;
-        toSend[4] = 0xC8;
+    toSend[5] = pitch;
+    toSend[6] = (pitch >> 8);
+    toSend[7] = roll;
+    toSend[8] = (roll >> 8);
+    toSend[9] = speed;
+    toSend[10] = (speed >> 8);
+    toSend[11] = azimuth;
+    toSend[12] = (azimuth >> 8);
 
-        toSend[5] = pitch;
-        toSend[6] = (pitch >> 8);
-        toSend[7] = roll;
-        toSend[8] = (roll >> 8);
-        toSend[9] = speed;
-        toSend[10] = (speed >> 8);
-        toSend[11] = azimuth;
-        toSend[12] = (azimuth >> 8);
+    // arm
+        //b[13] = 0xe8;
+        //b[14] = 0x03;
+    // disarm
+    toSend[13] = 0xd0;
+    toSend[14] = 0x07;
 
-        // arm
-            //b[13] = 0xe8;
-            //b[14] = 0x03;
-        // disarm
-        toSend[13] = 0xd0;
-        toSend[14] = 0x07;
+    char checksum = 0;
 
-        char checksum = 0;
+    for (i = 3; i < 16 - 1; i++)
+    {
+        checksum ^= toSend[i];
+    }
 
-        for (i = 3; i < 16 - 1; i++)
-            checksum ^= toSend[i];
+    toSend[15] = checksum;
 
-        toSend[15] = checksum;
-
-        int j = 0;
-        while(1)
-        {
-            GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
-            while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
-            UART_write(uart, toSend, (sizeof(toSend) / sizeof(char)));
-            while(UARTBusy(UART6_BASE));
-            GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-            j++;
-            Task_sleep(100);
-        }
-
-    // MAC Address of XMC: 0006668CB28E
+    while(1)
+    {
+        send_pac(&uart, toSend, sizeof(toSend));
+        Task_sleep(10);
+    }
 }
 
 void init_bt()
 {
-    Task_Params taskUARTParams;
-    Task_Handle taskUART;
+    Task_Params taskRN4678Params;
+    Task_Handle taskRN4678;
     Error_Block eb;
 
-    /*configure uart6 to interface bluetooth module*/
+    /*configure uart6 as interface to bluetooth module*/
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOP);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_UART6);
     GPIOPinConfigure(U6RX);
@@ -199,43 +158,44 @@ void init_bt()
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     GPIOPinTypeGPIOOutput(RN4678_CTS_PORT, RN4678_CTS);
     GPIOPadConfigSet(RN4678_CTS_PORT, RN4678_CTS, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0b00000000);
+    GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
 
     // SW_BTN
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     GPIOPinTypeGPIOOutput(SW_BTN_PORT, SW_BTN);
     GPIOPadConfigSet(SW_BTN_PORT, SW_BTN, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-    GPIOPinWrite(SW_BTN_PORT, SW_BTN, 0b00000000);
+    GPIOPinWrite(SW_BTN_PORT, SW_BTN, 0);
 
     // RST_N
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOP);
     GPIOPinTypeGPIOOutput(RST_PORT, RST);
     GPIOPadConfigSet(RST_PORT, RST, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-    GPIOPinWrite(RST_PORT, RST, 0b00010000);
+    GPIOPinWrite(RST_PORT, RST, RST);
 
     // WAKE_UP
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOM);
     GPIOPinTypeGPIOOutput(WAKEUP_PORT, WAKEUP);
     GPIOPadConfigSet(WAKEUP_PORT, WAKEUP, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-    GPIOPinWrite(WAKEUP_PORT, WAKEUP, 0b10000000);
+    GPIOPinWrite(WAKEUP_PORT, WAKEUP, WAKEUP);
 
     // init sequence
     SysCtlDelay((120000000 / 1000) * 500);
-    GPIOPinWrite(RST_PORT, RST, 0b00000000);
+    GPIOPinWrite(RST_PORT, RST, RST);
     SysCtlDelay((120000000 / 1000) * 100);
-    GPIOPinWrite(RST_PORT, RST, 0b00010000);
+    GPIOPinWrite(RST_PORT, RST, RST);
     SysCtlDelay((120000000 / 1000) * 100);
-    GPIOPinWrite(SW_BTN_PORT, SW_BTN, 0b00000100);
+    GPIOPinWrite(SW_BTN_PORT, SW_BTN, SW_BTN);
 
     SysCtlDelay((120000000 / 1000) * 500);
-    SysCtlDelay((120000000 / 1000) * 5000);
+    //SysCtlDelay((120000000 / 1000) * 5000);
+    while((GPIOPinRead(STATUS2_PORT, STATUS2) != 0x00) && (GPIOPinRead(STATUS1_PORT, STATUS1) != 0x00));
 
     Error_init(&eb);
-    Task_Params_init(&taskUARTParams);
-    taskUARTParams.stackSize = 1024; /* stack in bytes */
-    taskUARTParams.priority = 15; /* 0-15 (15 is highest priority on default -> see RTOS Task configuration) */
-    taskUART = Task_create((Task_FuncPtr)RN4678Fxn, &taskUARTParams, &eb);
-    if (taskUART == NULL) {
+    Task_Params_init(&taskRN4678Params);
+    taskRN4678Params.stackSize = 1024; /* stack in bytes */
+    taskRN4678Params.priority = 15; /* 0-15 (15 is highest priority on default -> see RTOS Task configuration) */
+    taskRN4678 = Task_create((Task_FuncPtr)RN4678Fxn, &taskRN4678Params, &eb);
+    if (taskRN4678 == NULL) {
         System_abort("Task RN4678 create failed");
     }
 }
