@@ -40,6 +40,8 @@ void RN4678Fxn(UArg arg0, UArg arg1)
     char connectCmd[15] = "C,0006668CB28E\r"; // connect to copter with MAC-address
     char leaveCmd[5] = "---\r\n"; // leave command mode
     char ret[16];
+    char input;
+    char buf[100];
 
     uint8_t i;
 
@@ -85,6 +87,20 @@ void RN4678Fxn(UArg arg0, UArg arg1)
     }
 
     Task_sleep(100);
+
+    /* Get Version of the drone via CLI mode
+     * TODO: TEST!!!
+     */
+    send_pac(&uart, "#version", sizeof("#version"));
+    i = 0;
+    do
+    {
+        UART_read(uart, &input, 1);
+        buf[i] = input;
+        i++;
+    }while(UARTCharsAvail(UART6_BASE));
+    send_pac(&uart, "#exit", sizeof("#exit"));
+
 
     System_printf("Begin data\n");
     char toSend[16];
