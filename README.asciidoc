@@ -1,23 +1,21 @@
-= Generic Basic TI-RTOS Project
+= MES-1 Quadcopter Project
 
-You may use this project as a basis for your own needs
-Clone this repo and all of its sub-modules by issueing: git clone --recursive <url>
+In this project (A first Semester Master Studies at FH Technikum Wien) a remote controller  is implemented for Infineon’s https://www.infineon.com/cms/en/applications/consumer/multicopters/[flying-PCB] quadcopter.
+Furthermore, there exists an Android app that can be used to fly the pcb.
 
-== Additional Activated Features
+== Project Setup
+image::Docs/joystick_edumKII.jpg[Embedded,300,opts=inline]
+image::Docs/project setup.svg[Embedded,300,opts=inline]
 
-. NDK Networking stack - Deacticate in the '.cfg' file if required.
-. 40kB of System Heap (Used by Tasks to allocate stack memory) - Alter in '.cfg' file if needed.
-. Software Interrupts - Change in '.cfg' file if needed.
 
-== Example Tasks
 
-. Blink Tasks using the clock module
-. UART Echo Task
-. TCP Echo Task
+== Hardware Overview
+The remote controller’s hardware platform must be the TM4C1294NCPT used throughout this course.
+You will use the RN4678 dual mode bluetooth transceiver already housing a complete bluetooth 4.2 and
+bluetooth low energy stack that is interfaced via UART to talk to the flying PCB. The flying PCB’s
+firmware wants you to use the http://myrobotlab.org/service/multiwii[MULTI WII] flight controller protocol. Additional documentation regarding
+the communication protocol to can be found http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol[here]. The user interface will be realized
+using a Texas Instruments Educational Boosterpack MKII offering various interface capabilities.
 
-== Additonal Configuration possibilites
-
-. Define 'CAN_0' in 'local_inc/EK_TM4C1294XL.h' to make use of the CAN controller and remap the UART pins from UART 0 to UART 1. 'can_driver' submodule needed.
-. Define 'I2CM_7' and 'I2CM_8' as well as 'SSIM_2' and 'SSIM_3' in 'local_inc/EK_TM4C1294XL.h'  according to you needs.
-
+== Video Demo
 
