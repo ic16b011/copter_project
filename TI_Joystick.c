@@ -246,5 +246,5 @@ void set_flight_controls(raw_rc_frame frame){
 
 
     // Send the RC values to be set on Flight Controller
-    //msp_send(msp_set_raw_rc, payload_size, payload);
+    //msp_send(msp_set_raw_rc, payload_size, payload); // will have to adapt the mps_send in the mps.h
 }
