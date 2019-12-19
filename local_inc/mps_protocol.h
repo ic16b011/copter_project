@@ -173,208 +173,6 @@ struct msp_raw_imu_t {
 #define MSP_STATUS_SENSOR_SONAR 16
 
 
-// MSP_STATUS_EX reply
-struct msp_status_ex_t {
-  uint16_t cycleTime;
-  uint16_t sensor;                    // MSP_STATUS_SENSOR_...
-  uint32_t flightModeFlags;           // see Active Modes function later
-  uint8_t  configProfileIndex;
-  uint16_t averageSystemLoadPercent;  // 0...100
-  uint16_t armingFlags;
-  uint8_t  accCalibrationAxisFlags;
-} __attribute__ ((packed));
-
-
-// MSP_STATUS
-typedef struct msp_status_t {
-  uint16_t cycleTime;
-  uint16_t sensor;                    // MSP_STATUS_SENSOR_...
-  uint32_t flightModeFlags;           // see getActiveModes()
-  uint8_t  configProfileIndex;
-} msp_status_t __attribute__ ((packed));
-
-
-// MSP_SENSOR_STATUS reply
-struct msp_sensor_status_t {
-  uint8_t isHardwareHealthy;  // 0...1
-  uint8_t hwGyroStatus;
-  uint8_t hwAccelerometerStatus;
-  uint8_t hwCompassStatus;
-  uint8_t hwBarometerStatus;
-  uint8_t hwGPSStatus;
-  uint8_t hwRangefinderStatus;
-  uint8_t hwPitotmeterStatus;
-  uint8_t hwOpticalFlowStatus;
-} __attribute__ ((packed));
-
-
-#define MSP_MAX_SUPPORTED_SERVOS 8
-
-// MSP_SERVO reply
-struct msp_servo_t {
-  uint16_t servo[MSP_MAX_SUPPORTED_SERVOS];
-} __attribute__ ((packed));
-
-
-// MSP_SERVO_CONFIGURATIONS reply
-struct msp_servo_configurations_t {
-  __attribute__ ((packed)) struct {
-    uint16_t min;
-    uint16_t max;
-    uint16_t middle;
-    uint8_t rate;
-    uint8_t angleAtMin;
-    uint8_t angleAtMax;
-    uint8_t forwardFromChannel;
-    uint32_t reversedSources;
-  } conf[MSP_MAX_SUPPORTED_SERVOS];
-} __attribute__ ((packed));
-
-
-#define MSP_MAX_SERVO_RULES (2 * MSP_MAX_SUPPORTED_SERVOS)
-
-// MSP_SERVO_MIX_RULES reply
-struct msp_servo_mix_rules_t {
-  __attribute__ ((packed)) struct {
-    uint8_t targetChannel;
-    uint8_t inputSource;
-    uint8_t rate;
-    uint8_t speed;
-    uint8_t min;
-    uint8_t max;
-  } mixRule[MSP_MAX_SERVO_RULES];
-} __attribute__ ((packed));
-
-
-#define MSP_MAX_SUPPORTED_MOTORS 8
-
-// MSP_MOTOR reply
-struct msp_motor_t {
-  uint16_t motor[MSP_MAX_SUPPORTED_MOTORS];
-} __attribute__ ((packed));
-
-
-#define MSP_MAX_SUPPORTED_CHANNELS 16
-
-// MSP_RC reply
-struct msp_rc_t {
-  uint16_t channelValue[MSP_MAX_SUPPORTED_CHANNELS];
-} __attribute__ ((packed));
-
-
-// MSP_ATTITUDE reply
-struct msp_attitude_t {
-  int16_t roll;
-  int16_t pitch;
-  int16_t yaw;
-} __attribute__ ((packed));
-
-
-// MSP_ALTITUDE reply
-struct msp_altitude_t {
-  int32_t estimatedActualPosition;  // cm
-  int16_t estimatedActualVelocity;  // cm/s
-  int32_t baroLatestAltitude;
-} __attribute__ ((packed));
-
-
-// MSP_SONAR_ALTITUDE reply
-struct msp_sonar_altitude_t {
-  int32_t altitude;
-} __attribute__ ((packed));
-
-
-
-//Todo: Need to send this as first command to the qcopter
-
-// MSP_ARMING_CONFIG reply
-struct msp_arming_config_t {
-  uint8_t auto_disarm_delay;
-  uint8_t disarm_kill_switch;
-} __attribute__ ((packed));
-
-
-// MSP_LOOP_TIME reply
-struct msp_loop_time_t {
-  uint16_t looptime;
-} __attribute__ ((packed));
-
-
-// MSP_RC_TUNING reply
-struct msp_rc_tuning_t {
-  uint8_t  rcRate8;  // no longer used
-  uint8_t  rcExpo8;
-  uint8_t  rates[3]; // R,P,Y
-  uint8_t  dynThrPID;
-  uint8_t  thrMid8;
-  uint8_t  thrExpo8;
-  uint16_t tpa_breakpoint;
-  uint8_t  rcYawExpo8;
-} __attribute__ ((packed));
-
-
-// MSP_PID reply
-struct msp_pid_t {
-  uint8_t roll[3];     // 0=P, 1=I, 2=D
-  uint8_t pitch[3];    // 0=P, 1=I, 2=D
-  uint8_t yaw[3];      // 0=P, 1=I, 2=D
-  uint8_t pos_z[3];    // 0=P, 1=I, 2=D
-  uint8_t pos_xy[3];   // 0=P, 1=I, 2=D
-  uint8_t vel_xy[3];   // 0=P, 1=I, 2=D
-  uint8_t surface[3];  // 0=P, 1=I, 2=D
-  uint8_t level[3];    // 0=P, 1=I, 2=D
-  uint8_t heading[3];  // 0=P, 1=I, 2=D
-  uint8_t vel_z[3];    // 0=P, 1=I, 2=D
-} __attribute__ ((packed));
-
-
-// MSP_MISC reply
-struct msp_misc_t {
-  uint16_t midrc;
-  uint16_t minthrottle;
-  uint16_t maxthrottle;
-  uint16_t mincommand;
-  uint16_t failsafe_throttle;
-  uint8_t  gps_provider;
-  uint8_t  gps_baudrate;
-  uint8_t  gps_ubx_sbas;
-  uint8_t  multiwiiCurrentMeterOutput;
-  uint8_t  rssi_channel;
-  uint8_t  dummy;
-  uint16_t mag_declination;
-  uint8_t  vbatscale;
-  uint8_t  vbatmincellvoltage;
-  uint8_t  vbatmaxcellvoltage;
-  uint8_t  vbatwarningcellvoltage;
-} __attribute__ ((packed));
-
-
-// values
-#define MSP_GPS_NO_FIX 0
-#define MSP_GPS_FIX_2D 1
-#define MSP_GPS_FIX_3D 2
-
-
-// MSP_RAW_GPS reply
-struct msp_raw_gps_t {
-  uint8_t  fixType;       // MSP_GPS_NO_FIX, MSP_GPS_FIX_2D, MSP_GPS_FIX_3D
-  uint8_t  numSat;
-  int32_t  lat;           // 1 / 10000000 deg
-  int32_t  lon;           // 1 / 10000000 deg
-  int16_t  alt;           // meters
-  int16_t  groundSpeed;   // cm/s
-  int16_t  groundCourse;  // unit: degree x 10
-  uint16_t hdop;
-} __attribute__ ((packed));
-
-
-// MSP_COMP_GPS reply
-struct msp_comp_gps_t {
-  int16_t  distanceToHome;  // distance to home in meters
-  int16_t  directionToHome; // direction to home in degrees
-  uint8_t  heartbeat;       // toggles 0 and 1 for each change
-} __attribute__ ((packed));
-
 
 // values for msp_nav_status_t.mode
 #define MSP_NAV_STATUS_MODE_NONE   0
@@ -419,8 +217,9 @@ struct msp_comp_gps_t {
 
 
 
-
-
+//Range [1000;2000]
+//ROLL/PITCH/YAW/THROTTLE/AUX1/AUX2/AUX3AUX4
+#define MSP_MAX_SUPPORTED_CHANNELS 8
 
 // MSP_SET_HEAD CMD
 struct msp_set_head_t {
@@ -462,6 +261,15 @@ struct msp_set_wp_t {
   int16_t p3;       // not used
   uint8_t flag;     // 0xa5 = last, otherwise set to 0
 } __attribute__ ((packed));
+
+typedef struct joycontrol {
+  uint32_t speedUp;
+  uint32_t speedDown;
+  uint32_t azimuthDown;
+} joycontrol __attribute__ ((packed));
+
+
+
 
 
 
