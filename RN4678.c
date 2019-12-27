@@ -6,25 +6,29 @@
  */
 #include "RN4678.h"
 
+UART_Handle uart;
+
 // send data packet
-void send_pac(UART_Handle *uart, char *data, uint8_t size)
+void send_pac(char *data, uint8_t size)
 {
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
     while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
-    UART_write(*uart, data, size);
+    UART_write(uart, data, size);
     while(UARTBusy(UART6_BASE));
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
 }
 
 // send commands to RN4678
-void start_com(UART_Handle *uart, char *cmd, uint8_t size, uint8_t retsize, char *input)
+void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
 {
+    char inp[16] = { '\0' };
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
     while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
-    UART_write(*uart, cmd, size); // enter command mode
+    UART_write(uart, cmd, size); // enter command mode
     while(UARTBusy(UART6_BASE));
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-    UART_read(*uart, &input, retsize); // CMD sollte zurückkommen
+    UART_read(uart, &inp, retsize); // CMD sollte zurückkommen
+    strcpy(input, inp);
     System_printf("%s\n", cmd);
     System_flush();
     Task_sleep(5);
@@ -33,14 +37,12 @@ void start_com(UART_Handle *uart, char *cmd, uint8_t size, uint8_t retsize, char
 // cyclic task for RN4678
 void RN4678Fxn(UArg arg0, UArg arg1)
 {
-    UART_Handle uart;
     UART_Params uartParams;
 
     char cmdCmd[3] = "$$$"; // enter command mode
     char connectCmd[15] = "C,0006668CB28E\r"; // connect to copter with MAC-address
     char leaveCmd[5] = "---\r\n"; // leave command mode
-    char ret[16];
-    char input;
+    char ret[17];
     char buf[100];
 
     uint8_t i;
@@ -60,14 +62,16 @@ void RN4678Fxn(UArg arg0, UArg arg1)
         System_abort("Error opening the UART");
     }
 
+    System_printf("UART initialized\n");
+    Task_sleep(10);
 
     // enter command mode with $$$
-    start_com(&uart, cmdCmd, sizeof(cmdCmd), 4, ret);
+    start_com(cmdCmd, sizeof(cmdCmd), 4, ret);
 
     if(strstr(ret, "CMD") != NULL)
     {
         // connect to copter
-        start_com(&uart, connectCmd, sizeof(connectCmd), 16, ret);
+        start_com(connectCmd, sizeof(connectCmd), 16, ret);
         if(strstr(ret, "CONNECT") != NULL)
         {
             // wait for connected status
@@ -76,7 +80,7 @@ void RN4678Fxn(UArg arg0, UArg arg1)
             System_flush();
 
             // leave command mode
-            start_com(&uart, leaveCmd, sizeof(leaveCmd), 1, ret);
+            start_com(leaveCmd, sizeof(leaveCmd), 1, ret);
 
             // flush UART In-Buffer
             while(UARTCharsAvail(UART6_BASE))
@@ -91,15 +95,22 @@ void RN4678Fxn(UArg arg0, UArg arg1)
     /* Get Version of the drone via CLI mode
      * TODO: TEST!!!
      */
-    send_pac(&uart, "#version", sizeof("#version"));
-    i = 0;
+    send_pac("#", sizeof("#"));
+    Task_sleep(100);
+    // flush UART In-Buffer
     do
     {
-        UART_read(uart, &input, 1);
-        buf[i] = input;
-        i++;
+        ret[0] = UARTCharGet(UART6_BASE);
+        //UART_read(uart, &ret, 15);
+        //UART_read(uart, &ret, 2);
     }while(UARTCharsAvail(UART6_BASE));
-    send_pac(&uart, "#exit", sizeof("#exit"));
+    send_pac("profile", sizeof("profile"));
+    for(i = 0; i < 17; i++)
+        ret[i] = '\0';
+    UART_read(uart, &ret, 7);
+    buf[i] = '\0';
+    System_printf("%s", buf);
+    send_pac("exit", sizeof("exit"));
 
 
     System_printf("Begin data\n");
@@ -143,7 +154,7 @@ void RN4678Fxn(UArg arg0, UArg arg1)
 
     while(1)
     {
-        send_pac(&uart, toSend, sizeof(toSend));
+        send_pac(toSend, sizeof(toSend));
         Task_sleep(10);
     }
 }
@@ -196,7 +207,7 @@ void init_bt()
 
     // init sequence
     SysCtlDelay((120000000 / 1000) * 500);
-    GPIOPinWrite(RST_PORT, RST, RST);
+    GPIOPinWrite(RST_PORT, RST, 0);
     SysCtlDelay((120000000 / 1000) * 100);
     GPIOPinWrite(RST_PORT, RST, RST);
     SysCtlDelay((120000000 / 1000) * 100);
@@ -205,6 +216,7 @@ void init_bt()
     SysCtlDelay((120000000 / 1000) * 500);
     //SysCtlDelay((120000000 / 1000) * 5000);
     while((GPIOPinRead(STATUS2_PORT, STATUS2) != 0x00) && (GPIOPinRead(STATUS1_PORT, STATUS1) != 0x00));
+    SysCtlDelay((120000000 / 1000) * 500);
 
     Error_init(&eb);
     Task_Params_init(&taskRN4678Params);
