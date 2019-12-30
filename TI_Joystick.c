@@ -32,9 +32,14 @@
 #include <Board.h>
 
 static Bool qpArmToggle = false;
+raw_rc_frame frame;
+extern uint8_t ready_for_data;
 
 
 void joystick_fnx(UArg arg0 );
+void set_flight_controls();
+void arm();
+void disarm();
 
 
 void gpioSeLFxn0(unsigned int index)
@@ -44,8 +49,16 @@ void gpioSeLFxn0(unsigned int index)
         System_printf("JoyStick Select Pressed......\n");
         System_flush();
 
-        qpArmToggle ^= true;
-
+        if(qpArmToggle == false)
+        {
+            qpArmToggle = true;
+            disarm();
+        }
+        else
+        {
+            qpArmToggle = false;
+            arm();
+        }
 }
 
 
@@ -170,7 +183,8 @@ void joystick_fnx(UArg arg0 )
 
     while (1)
     {
-
+        if(ready_for_data != 0)
+        {
         ADCIntClear(ADC0_BASE, 1);
         ADCProcessorTrigger(ADC0_BASE, 1);
         while (!ADCIntStatus(ADC0_BASE, 1, false))
@@ -199,51 +213,92 @@ void joystick_fnx(UArg arg0 )
         System_flush();
 #endif
 
+        frame.throttle = (ui32JoyY/4) + 1000;
+        frame.azimuth = 1500;
+        //frame.azimuth = (ui32JoyX/4) + 1000;
+        //frame.pitch = (ui32AccY/3) + 1000;
+        //frame.roll = (ui32AccX/3) + 1000;
+        frame.pitch = 1250;
+        frame.roll = 1500;
+        set_flight_controls();
+        }
+        Task_sleep(10);
     }
-
-
-
 }
 
 
-void arm(raw_rc_frame *armF)
+void arm()
 {
 
     System_printf("Arming\n");
     System_flush();
 
-    // the sequence value of yaw to be armed
-    armF->yaw = 2000;
+    // the sequence value of arm to be armed
+    frame.arm = 1;
 
 }
 
 
-void disarm(raw_rc_frame *armF)
+void disarm()
 {
 
     System_printf("DisArming\n");
     System_flush();
-    armF->yaw = 1000; //DEFAULT
+    frame.arm = 0; //DEFAULT
 
 }
 
 
-void set_flight_controls(raw_rc_frame frame){
+void set_flight_controls(){
 
+    uint8_t armdata[2];
+    int i;
     // limit to [1000:2000] range
     if (frame.roll > 2000){frame.roll = 2000;}
     if (frame.roll < 1000){frame.roll = 1000;}
     if (frame.pitch > 2000){frame.pitch = 2000;}
     if (frame.pitch < 1000){frame.pitch = 1000;}
-    if (frame.yaw > 2000){frame.yaw = 2000;}
-    if (frame.yaw < 1000){frame.yaw = 1000;}
+    if (frame.arm == 0){armdata[0] = 0xd0; armdata[1] = 0x07;}
+    else {armdata[0] = 0xe8; armdata[1] = 0x03;}
     if (frame.throttle > 2000){frame.throttle = 2000;}
     if (frame.throttle < 1000){frame.throttle = 1000;}
 
-    const uint8_t payload_size = 8;
+    uint8_t payload_size = 16;
 
-    uint16_t payload[payload_size] = {frame.roll, frame.pitch, frame.yaw, frame.throttle, frame.aux1, 0, 0, 0};
+    char payload[payload_size];
+    payload[0] = 0x24;
+    payload[1] = 0x4D;
+    payload[2] = 0x3C;
+    payload[3] = 0x0A;
+    payload[4] = 0xC8;
+    payload[5] = frame.pitch;
+    payload[6] = (frame.pitch>>8);
+    payload[7] = frame.roll;
+    payload[8] = (frame.roll>>8);
+    payload[9] = frame.throttle;
+    payload[10] = (frame.throttle>>8);
+    payload[11] = frame.azimuth;
+    payload[12] = (frame.azimuth>>8);
+    payload[13] = armdata[0];
+    payload[14] = armdata[1];
 
+    char checksum = 0;
+    for (i = 3; i < 15; i++)
+    {
+        checksum ^= payload[i];
+    }
+    payload[15] = checksum;
+
+    System_printf("pitch: %d\n", frame.pitch);
+    System_flush();
+    System_printf("roll: %d\n", frame.roll);
+    System_flush();
+    System_printf("throttle: %d\n", frame.throttle);
+    System_flush();
+    System_printf("azimuth: %d\n", frame.azimuth);
+    System_flush();
+
+    send_pac(payload, sizeof(payload));
 
     // Send the RC values to be set on Flight Controller
     //msp_send(msp_set_raw_rc, payload_size, payload); // will have to adapt the mps_send in the mps.h

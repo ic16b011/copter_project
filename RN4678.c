@@ -7,6 +7,7 @@
 #include "RN4678.h"
 
 UART_Handle uart;
+uint8_t ready_for_data = 0;
 
 // send data packet
 void send_pac(char *data, uint8_t size)
@@ -114,49 +115,8 @@ void RN4678Fxn(UArg arg0, UArg arg1)
 
 
     System_printf("Begin data\n");
-    char toSend[16];
-    int speed = 1500;
-    int arm = 0;
-    int azimuth = 1500;
-    int pitch = 1500;
-    int roll = 1500;
-
-    toSend[0] = 0x24;
-    toSend[1] = 0x4D;
-    toSend[2] = 0x3C;
-    toSend[3] = 0x0A;
-    toSend[4] = 0xC8;
-
-    toSend[5] = pitch;
-    toSend[6] = (pitch >> 8);
-    toSend[7] = roll;
-    toSend[8] = (roll >> 8);
-    toSend[9] = speed;
-    toSend[10] = (speed >> 8);
-    toSend[11] = azimuth;
-    toSend[12] = (azimuth >> 8);
-
-    // arm
-        //b[13] = 0xe8;
-        //b[14] = 0x03;
-    // disarm
-    toSend[13] = 0xd0;
-    toSend[14] = 0x07;
-
-    char checksum = 0;
-
-    for (i = 3; i < 16 - 1; i++)
-    {
-        checksum ^= toSend[i];
-    }
-
-    toSend[15] = checksum;
-
-    while(1)
-    {
-        send_pac(toSend, sizeof(toSend));
-        Task_sleep(10);
-    }
+    System_flush();
+    ready_for_data = 1;
 }
 
 void init_bt()

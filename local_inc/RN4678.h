@@ -45,5 +45,6 @@
 #define STATUS2_PORT    GPIO_PORTQ_BASE
 
 void init_bt();
+extern void send_pac(char *data, uint8_t size);
 
 #endif /* LOCAL_INC_RN4678_H_ */

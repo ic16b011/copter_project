@@ -18,12 +18,14 @@
 #include <xdc/runtime/Error.h>
 #include <ti/sysbios/knl/Event.h>
 
+#include <RN4678.h>
+
 typedef struct raw_rc_frame {
     uint16_t roll; // 16 bit Range [1000;2000]
     uint16_t pitch; // 16 bit Range [1000;2000]
-    uint16_t yaw; // 16 bit Range [1000;2000]
     uint16_t throttle; // 16 bit Range [1000;2000]
-    uint16_t aux1;
+    uint16_t azimuth; // 16 bit Range [1000;2000]
+    uint8_t arm;
 }raw_rc_frame;
 
 #define JOYS_GPIO_BASE GPIO_PORTE_BASE
@@ -62,7 +64,6 @@ extern void setUpJoyStick_Task();
  * */
 extern void initSPI(void);
 extern void send_to_Screen(char data);
-
 
 
 #endif /* LOCAL_INC_TI_JOYSTICK_H_ */
