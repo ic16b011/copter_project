@@ -19,6 +19,11 @@ void send_pac(char *data, uint8_t size)
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
 }
 
+void read_data(char *data)
+{
+    UART_read(uart, data, 4);
+}
+
 // send commands to RN4678
 void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
 {
@@ -30,8 +35,10 @@ void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
     UART_read(uart, &inp, retsize); // CMD sollte zurückkommen
     strcpy(input, inp);
+#ifdef _DEBUG
     System_printf("%s\n", cmd);
     System_flush();
+#endif
     Task_sleep(5);
 }
 
@@ -41,12 +48,9 @@ void RN4678Fxn(UArg arg0, UArg arg1)
     UART_Params uartParams;
 
     char cmdCmd[3] = "$$$"; // enter command mode
-    char connectCmd[15] = "C,0006668CB28E\r"; // connect to copter with MAC-address
+    char connectCmd[15] = "C,0006668CB218\r"; // connect to copter with MAC-address
     char leaveCmd[5] = "---\r\n"; // leave command mode
     char ret[17];
-    char buf[100];
-
-    uint8_t i;
 
     /* Create a UART with data processing off.*/
     UART_Params_init(&uartParams);
@@ -63,7 +67,10 @@ void RN4678Fxn(UArg arg0, UArg arg1)
         System_abort("Error opening the UART");
     }
 
+#ifdef _DEBUG
     System_printf("UART initialized\n");
+    System_flush();
+#endif
     Task_sleep(10);
 
     // enter command mode with $$$
@@ -77,8 +84,10 @@ void RN4678Fxn(UArg arg0, UArg arg1)
         {
             // wait for connected status
             while((GPIOPinRead(STATUS2_PORT, STATUS2) != 0x00) || (GPIOPinRead(STATUS1_PORT, STATUS1) == 0x00));
+#ifdef _DEBUG
             System_printf("Connected\n");
             System_flush();
+#endif
 
             // leave command mode
             start_com(leaveCmd, sizeof(leaveCmd), 1, ret);
@@ -93,29 +102,10 @@ void RN4678Fxn(UArg arg0, UArg arg1)
 
     Task_sleep(100);
 
-    /* Get Version of the drone via CLI mode
-     * TODO: TEST!!!
-     */
-    send_pac("#", sizeof("#"));
-    Task_sleep(100);
-    // flush UART In-Buffer
-    do
-    {
-        ret[0] = UARTCharGet(UART6_BASE);
-        //UART_read(uart, &ret, 15);
-        //UART_read(uart, &ret, 2);
-    }while(UARTCharsAvail(UART6_BASE));
-    send_pac("profile", sizeof("profile"));
-    for(i = 0; i < 17; i++)
-        ret[i] = '\0';
-    UART_read(uart, &ret, 7);
-    buf[i] = '\0';
-    System_printf("%s", buf);
-    send_pac("exit", sizeof("exit"));
-
-
+#ifdef _DEBUG
     System_printf("Begin data\n");
     System_flush();
+#endif
     ready_for_data = 1;
 }
 
@@ -172,9 +162,9 @@ void init_bt()
     GPIOPinWrite(RST_PORT, RST, RST);
     SysCtlDelay((120000000 / 1000) * 100);
     GPIOPinWrite(SW_BTN_PORT, SW_BTN, SW_BTN);
-
     SysCtlDelay((120000000 / 1000) * 500);
-    //SysCtlDelay((120000000 / 1000) * 5000);
+
+    // wait for the correct status of the RN4678
     while((GPIOPinRead(STATUS2_PORT, STATUS2) != 0x00) && (GPIOPinRead(STATUS1_PORT, STATUS1) != 0x00));
     SysCtlDelay((120000000 / 1000) * 500);
 

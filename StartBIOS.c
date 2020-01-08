@@ -32,22 +32,30 @@ int main(void)
 
     // initialize the RN4678 and start the communication task
     init_bt();
+#ifdef _DEBUG
     System_printf("Created RN4678 Task\n");
     System_flush();
+#endif
 
 
     EdM_ADC_Init();
+#ifdef _DEBUG
     System_printf("Setting up ADC for Joystick Done!! \n");
     System_flush();
+#endif
 
-    System_printf("Setting up EduMiki Joystick Task !! \n");
-    System_flush();
     setUpJoyStick_Task();
+#ifdef _DEBUG
+    System_printf("Set up EduMiki Joystick Task !! \n");
+    System_flush();
+#endif
 
 
+#ifdef _DEBUG
     /* SysMin will only print to the console upon calling flush or exit */
     System_printf("Start BIOS\n");
     System_flush();
+#endif
 
     /* Start BIOS */
     BIOS_start();

@@ -46,8 +46,10 @@ void gpioSeLFxn0(unsigned int index)
 {
     // JoyStick Select Button
     //
+#ifdef _DEBUG
         System_printf("JoyStick Select Pressed......\n");
         System_flush();
+#endif
 
         if(qpArmToggle == false)
         {
@@ -60,20 +62,6 @@ void gpioSeLFxn0(unsigned int index)
             arm();
         }
 }
-
-
-void ADC0_HandlerInt(void)
-{
-    uint32_t adcSamples[4];
-    static uint32_t ui32JoysX = 0;
-    static uint32_t ui32JoysY = 0;
-
-    ADCIntClear(JOYS_ADC_BASE, 1);
-    ADCSequenceDataGet(JOYS_ADC_BASE, 1, adcSamples);
-    ui32JoysX = adcSamples[0];
-    ui32JoysY = adcSamples[1];
-}
-
 
 void EdM_ADC_Init(void)
 {
@@ -88,17 +76,8 @@ void EdM_ADC_Init(void)
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC1);
-    //SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-    //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE); //Done in the main by the Board_general
 
-    //GPIOPinTypeADC(JOYS_GPIO_BASE, JOYS_X | JOYS_Y);
     GPIOPinTypeADC(JOYS_GPIO_BASE, JOYS_X | JOYS_Y | JOyACC_X |JOyACC_Y | JOyACC_Z );
-
-    //ADCClockConfigSet(ADC0_BASE, ADC_CLOCK_SRC_PIOSC | ADC_CLOCK_RATE_EIGHTH, 1);
-
-    //Use the TI internal sampling algorithm
-   // ADCHardwareOversampleConfigure(ADC0_BASE,64); // each sample in the ADC FIFO will be the result of 64 measurements being averaged together
-
 
     ADCClockConfigSet(JOYS_ADC_BASE| JOyACC_ADC_BASE , ADC_CLOCK_SRC_PIOSC | ADC_CLOCK_RATE_EIGHTH, 1);
     ADCHardwareOversampleConfigure(JOYS_ADC_BASE | JOyACC_ADC_BASE ,64); // each sample in the ADC FIFO will be the result of 64 measurements being averaged together
@@ -120,23 +99,8 @@ void EdM_ADC_Init(void)
     ADCSequenceStepConfigure(JOyACC_ADC_BASE, 2, 1, JOyACC_CH_Y);
     ADCSequenceStepConfigure(JOyACC_ADC_BASE, 2, 2, JOyACC_CH_Z | ADC_CTL_IE | ADC_CTL_END);
 
-
-
-    //TimerConfigure(JOYS_TIMER_BASE, TIMER_CFG_PERIODIC);
-    //TimerLoadSet(JOYS_TIMER_BASE, TIMER_A, SysCtlClockGet()/JOY_SAMPLE_RATE);
-    //TimerControlTrigger(JOY_TIMER_BASE, TIMER_A, true);
-
     ADCSequenceEnable(JOYS_ADC_BASE, 1);
     ADCSequenceEnable(JOyACC_ADC_BASE, 2);
-    //TimerEnable(JOYS_TIMER_BASE, TIMER_A);
-
-
-#if 0 //fixme: later
-    ADCIntRegister(JOY_ADC_BASE, 1, ADC0_HandlerInt);
-    ADCIntEnable(JOY_ADC_BASE, 1);
-#endif
-
-
 }
 
 void setUpJoyStick_Task(void)
@@ -157,70 +121,103 @@ void setUpJoyStick_Task(void)
     {
         System_abort("Create Joystick_task_setup failed");
     }
-
-    System_printf("Task set up done\n");
-    System_flush();
-
 }
 
 
 void joystick_fnx(UArg arg0 )
 {
-
-    System_printf("init done\n");
-    System_flush();
-
     uint32_t adcSamples[6];
     static uint32_t ui32JoyX = 0;
     static uint32_t ui32JoyY = 0;
 
-    static uint32_t ui32AccX = 0;
+    //static uint32_t ui32AccX = 0; --> not needed at the moment
     static uint32_t ui32AccY = 0;
-    static uint32_t ui32AccZ = 0;
+    //static uint32_t ui32AccZ = 0; --> not needed at the moment
 
-
-
+    frame.throttle = 1000;
+    frame.roll = 1500;
+    frame.pitch = 1500;
+    frame.azimuth = 1500;
 
     while (1)
     {
         if(ready_for_data != 0)
         {
-        ADCIntClear(ADC0_BASE, 1);
-        ADCProcessorTrigger(ADC0_BASE, 1);
-        while (!ADCIntStatus(ADC0_BASE, 1, false))
-        {
-        }
-        ADCSequenceDataGet(ADC0_BASE, 1, adcSamples);
+            ADCIntClear(ADC0_BASE, 1);
+            ADCProcessorTrigger(ADC0_BASE, 1);
+            while (!ADCIntStatus(ADC0_BASE, 1, false))
+            {
+            }
+            ADCSequenceDataGet(ADC0_BASE, 1, adcSamples);
 
-        //Delay a bit and read the ADC1
-        SysCtlDelay(200);
+            //Delay a bit and read the ADC1
+            SysCtlDelay(200);
 
-        ADCIntClear(JOyACC_ADC_BASE, 2);
-        ADCProcessorTrigger(JOyACC_ADC_BASE, 2);
-        while (!ADCIntStatus(JOyACC_ADC_BASE, 2, false))
-        {
-        }
-        ADCSequenceDataGet(JOyACC_ADC_BASE, 2, &adcSamples[2]);
+            ADCIntClear(JOyACC_ADC_BASE, 2);
+            ADCProcessorTrigger(JOyACC_ADC_BASE, 2);
+            while (!ADCIntStatus(JOyACC_ADC_BASE, 2, false))
+            {
+            }
+            ADCSequenceDataGet(JOyACC_ADC_BASE, 2, &adcSamples[2]);
 
-        ui32JoyX = adcSamples[0];
-        ui32JoyY = adcSamples[1];
+            ui32JoyX = adcSamples[0];
+            ui32JoyY = adcSamples[1];
 
-        ui32AccX = adcSamples[2];
-        ui32AccY = adcSamples[3];
-        ui32AccZ = adcSamples[4];
-#ifdef _DEBUG
-        System_printf("Joystick X-Axis: %u Y-Axis: %u\n",ui32JoyX,ui32JoyY);
-        System_flush();
-#endif
+            //ui32AccX = adcSamples[2]; --> not needed at the moment
+            ui32AccY = adcSamples[3];
+            //ui32AccZ = adcSamples[4]; --> not needed at the moment
+    #ifdef _DEBUG
+            System_printf("Joystick X-Axis: %u Y-Axis: %u\n",ui32JoyX,ui32JoyY);
+            System_flush();
+    #endif
 
-        frame.throttle = (ui32JoyY/4) + 1000;
-        frame.azimuth = 1500;
-        //frame.azimuth = (ui32JoyX/4) + 1000;
-        //frame.pitch = (ui32AccY/3) + 1000;
-        //frame.roll = (ui32AccX/3) + 1000;
-        frame.pitch = 1250;
-        frame.roll = 1500;
-        set_flight_controls();
+            if(ui32JoyX < 1000)
+            {
+                frame.pitch = frame.pitch - 10;
+                if(frame.pitch < 1000)
+                {
+                    frame.pitch = 1000;
+                }
+            }
+            else if(ui32JoyX > 3500)
+            {
+                frame.pitch = frame.pitch + 10;
+                if(frame.pitch > 2000)
+                {
+                    frame.pitch = 2000;
+                }
+            }
+
+            if(ui32JoyY < 1000)
+            {
+                frame.roll = frame.roll - 10;
+                if(frame.roll < 1000)
+                {
+                    frame.roll = 1000;
+                }
+            }
+            else if(ui32JoyY > 3500)
+            {
+                frame.roll = frame.roll + 10;
+                if(frame.roll > 2000)
+                {
+                    frame.roll = 2000;
+                }
+            }
+
+            if(ui32AccY > 2500)
+            {
+                frame.throttle = frame.throttle + 5;
+                if(frame.throttle > 2000)
+                    frame.throttle = 2000;
+            }
+            else if(ui32AccY < 1500)
+            {
+                frame.throttle = frame.throttle - 5;
+                if(frame.throttle < 1000)
+                    frame.throttle = 1000;
+            }
+            set_flight_controls();
         }
         Task_sleep(10);
     }
@@ -229,9 +226,10 @@ void joystick_fnx(UArg arg0 )
 
 void arm()
 {
-
+#ifdef _DEBUG
     System_printf("Arming\n");
     System_flush();
+#endif
 
     // the sequence value of arm to be armed
     frame.arm = 1;
@@ -241,9 +239,10 @@ void arm()
 
 void disarm()
 {
-
+#ifdef _DEBUG
     System_printf("DisArming\n");
     System_flush();
+#endif
     frame.arm = 0; //DEFAULT
 
 }
@@ -266,11 +265,12 @@ void set_flight_controls(){
     uint8_t payload_size = 16;
 
     char payload[payload_size];
-    payload[0] = 0x24;
-    payload[1] = 0x4D;
-    payload[2] = 0x3C;
-    payload[3] = 0x0A;
-    payload[4] = 0xC8;
+    payload[0] = 0x24; // $
+    payload[1] = 0x4D; // M
+    payload[2] = 0x3C; // >
+    payload[3] = 0x0A; // size of data
+    payload[4] = 0xC8; // cmd (200 for setting RC)
+
     payload[5] = frame.pitch;
     payload[6] = (frame.pitch>>8);
     payload[7] = frame.roll;
@@ -289,6 +289,7 @@ void set_flight_controls(){
     }
     payload[15] = checksum;
 
+#ifdef _DEBUG
     System_printf("pitch: %d\n", frame.pitch);
     System_flush();
     System_printf("roll: %d\n", frame.roll);
@@ -297,9 +298,7 @@ void set_flight_controls(){
     System_flush();
     System_printf("azimuth: %d\n", frame.azimuth);
     System_flush();
+#endif
 
     send_pac(payload, sizeof(payload));
-
-    // Send the RC values to be set on Flight Controller
-    //msp_send(msp_set_raw_rc, payload_size, payload); // will have to adapt the mps_send in the mps.h
 }
