@@ -19,11 +19,6 @@ void send_pac(char *data, uint8_t size)
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
 }
 
-void read_data(char *data)
-{
-    UART_read(uart, data, 4);
-}
-
 // send commands to RN4678
 void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
 {
