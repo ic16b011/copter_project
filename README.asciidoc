@@ -20,7 +20,6 @@ using a Texas Instruments Educational Boosterpack MKII offering various interfac
 
 ==  Documentation
 Three different documentations were generated in the documentation folder https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs[doxygenDocs]
-https://github.com/ic16b011/copter_project/blob/quadcopter_base_public/doxygenDocs/html/index.html[Doxygen]
 
 1. https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/html[html]
 2. https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/man[man]
