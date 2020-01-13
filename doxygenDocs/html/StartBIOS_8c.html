@@ -84,7 +84,7 @@ $(document).ready(function(){initNavTree('StartBIOS_8c.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
-<tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Entry point of the quadcopter application. Setting up board specific pins/GPIO init and setup the RN468 GPIO to kick up the BLUETH Modules( with RTOS task). ADC initialization and setup of the task for Joystick data processing to feed to the quadcopter ver the BLUETH.  <a href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">More...</a><br /></td></tr>
+<tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Entry point of the quadcopter application. Setting up board specific pins/GPIO init and initialize the RN4678 in a RTOS Task. ADC initialization and setup of the task for Joystick data processing to feed to the quadcopter over the BLUETOOTH.  <a href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">More...</a><br /></td></tr>
 <tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -120,9 +120,9 @@ Dennis Kwame Addo es19m006 </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Jump to RTOS tasks manager from BIOS and EXIT_FAILURE on failure (Error trap function) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="StartBIOS_8c_source.html#l00046">46</a> of file <a class="el" href="StartBIOS_8c_source.html">StartBIOS.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StartBIOS_8c_source.html#l00045">45</a> of file <a class="el" href="StartBIOS_8c_source.html">StartBIOS.c</a>.</p>
 
-<p class="reference">References <a class="el" href="Board_8h_source.html#l00043">Board_initGeneral</a>, <a class="el" href="Board_8h_source.html#l00044">Board_initGPIO</a>, <a class="el" href="TI__Joystick_8c_source.html#l00098">EdM_ADC_Init()</a>, <a class="el" href="RN4678_8c_source.html#l00165">init_bt()</a>, and <a class="el" href="TI__Joystick_8c_source.html#l00145">setUpJoyStick_Task()</a>.</p>
+<p class="reference">References <a class="el" href="Board_8h_source.html#l00043">Board_initGeneral</a>, <a class="el" href="Board_8h_source.html#l00044">Board_initGPIO</a>, <a class="el" href="TI__Joystick_8c_source.html#l00098">EdM_ADC_Init()</a>, <a class="el" href="RN4678_8c_source.html#l00161">init_bt()</a>, and <a class="el" href="TI__Joystick_8c_source.html#l00145">setUpJoyStick_Task()</a>.</p>
 
 </div>
 </div>
@@ -132,7 +132,7 @@ Dennis Kwame Addo es19m006 </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="StartBIOS_8c.html">StartBIOS.c</a></li>
-    <li class="footer">Generated on Mon Jan 13 2020 17:08:56 for copter_project by
+    <li class="footer">Generated on Mon Jan 13 2020 19:20:52 for copter_project by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>
   </ul>

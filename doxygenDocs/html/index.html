@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>copter_project: Main Page</title>
+<title>copter_project: MES-1 Quadcopter Project</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,17 +63,31 @@ $(document).ready(function(){initNavTree('index.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">copter_project Documentation</div>  </div>
+<div class="title">MES-1 Quadcopter Project </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p>In this project (A first Semester Master Studies at FH Technikum Wien) a remote controller is implemented for Infineon’s <a href="https://www.infineon.com/cms/en/applications/consumer/multicopters/">flying-PCB</a> quadcopter. Furthermore, there exists an Android app that can be used to fly the pcb.</p>
+<h3><a class="anchor" id="autotoc_md2"></a>
+Project Setup</h3>
+<p>image::Docs/joystick_edumKII.jpg[Embedded,300,opts=inline] <img src="Docs/joystick_edumKII.jpg" alt="alt text" title="Joystick" class="inline"/> <img src="Docs/project setup.svg" alt="alt text" title="Architecture quacopter" class="inline"/> <a href="https://github.com/ic16b011/copter_project"><img src="Docs/project setup.svg" alt="" class="inline"/> @subsubsection autotoc_md3 Hardware Overview The remote controller’s hardware platform must be the TM4C1294NCPT used throughout this course. You will use the RN4678 dual mode bluetooth transceiver already housing a complete bluetooth 4.2 and bluetooth low energy stack that is interfaced via UART to talk to the flying PCB. The flying PCB’s firmware wants you to use the MULTI WII</a> flight controller protocol. Additional documentation regarding the communication protocol to can be found <a href="http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol">here</a>. The user interface will be realized using a Texas Instruments Educational Boosterpack MKII offering various interface capabilities.</p>
+<h3><a class="anchor" id="autotoc_md4"></a>
+Documentation</h3>
+<p>Three different documentations were generated in the documentation folder <a href="https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs">doxygenDocs</a></p>
+<ol type="1">
+<li><a href="https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/html">html</a></li>
+<li><a href="https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/man">man</a></li>
+<li><a href="https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/rtf">rtf</a></li>
+</ol>
+<p>== Video Demo </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 13 2020 17:08:56 for copter_project by
+    <li class="footer">Generated on Mon Jan 13 2020 19:20:52 for copter_project by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>
   </ul>

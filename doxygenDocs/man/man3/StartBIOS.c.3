@@ -24,7 +24,7 @@ StartBIOS.c \- This is a simple quadcopter controller firmware\&.
 .ti -1c
 .RI "int \fBmain\fP (void)"
 .br
-.RI "The Entry point of the quadcopter application\&. Setting up board specific pins/GPIO init and setup the RN468 GPIO to kick up the BLUETH Modules( with RTOS task)\&. ADC initialization and setup of the task for Joystick data processing to feed to the quadcopter ver the BLUETH\&. "
+.RI "The Entry point of the quadcopter application\&. Setting up board specific pins/GPIO init and initialize the RN4678 in a RTOS Task\&. ADC initialization and setup of the task for Joystick data processing to feed to the quadcopter over the BLUETOOTH\&. "
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -74,7 +74,7 @@ Jump to RTOS tasks manager from BIOS and EXIT_FAILURE on failure (Error trap fun
 .PP
 
 .PP
-Definition at line 46 of file StartBIOS\&.c\&.
+Definition at line 45 of file StartBIOS\&.c\&.
 .PP
 References Board_initGeneral, Board_initGPIO, EdM_ADC_Init(), init_bt(), and setUpJoyStick_Task()\&.
 .SH "Author"

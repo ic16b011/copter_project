@@ -106,11 +106,11 @@ RN4678.h \- The GPIO setup and data transfer functions for the RN4678 module\&.
 .ti -1c
 .RI "void \fBinit_bt\fP ()"
 .br
-.RI "Setup of the GPIO pins and Peripherable ports for the RN4678 module\&. "
+.RI "Setup of the GPIO pins and Peripherable ports for the RN4678 module and initialize the RN4678\&. "
 .ti -1c
 .RI "void \fBsend_pac\fP (char *data, size_t size)"
 .br
-.RI "This is used to send Multiwii command to the quadcopter via bluetooth\&. The header and the command are packed in one packet of bytes\&. Activate the GPIO port for sending data check if port is ready and send data using UART write and wait till bytes is completely written and turnoff GPIO pin\&. "
+.RI "This is used to send Multiwii command to the quadcopter via bluetooth\&. The header and the command are packed in one packet of bytes\&. UART Flow Control is used and implemented in the Software for the communication with the RN4678\&. "
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -249,7 +249,7 @@ nothing but log and abort of failure to setup task for the BLUE Module
 .PP
 
 .PP
-Definition at line 165 of file RN4678\&.c\&.
+Definition at line 161 of file RN4678\&.c\&.
 .PP
 References RN4678_CTS, RN4678_CTS_PORT, RN4678_RTS, RN4678_RTS_PORT, RN4678Fxn(), RST, RST_PORT, STATUS1, STATUS1_PORT, STATUS2, STATUS2_PORT, SW_BTN, SW_BTN_PORT, U6RX, U6RX_PIN, U6TX, U6TX_PIN, U6TX_PORT, WAKEUP, and WAKEUP_PORT\&.
 .PP
@@ -271,7 +271,7 @@ Nothing
 .PP
 
 .PP
-Definition at line 37 of file RN4678\&.c\&.
+Definition at line 35 of file RN4678\&.c\&.
 .PP
 References RN4678_CTS, RN4678_CTS_PORT, RN4678_RTS, RN4678_RTS_PORT, and uart\&.
 .PP

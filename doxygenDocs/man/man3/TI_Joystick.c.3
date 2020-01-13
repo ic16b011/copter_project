@@ -54,11 +54,11 @@ TI_Joystick.c \- Application for getting Joystick data, x y-axis ADC values, acc
 .ti -1c
 .RI "void \fBarm\fP ()"
 .br
-.RI "To start the quadcopter spinning\&. "
+.RI "To stop the quadcopter spinning\&. "
 .ti -1c
 .RI "void \fBdisarm\fP ()"
 .br
-.RI "To stop the quadcopter spinning\&. "
+.RI "To start the quadcopter spinning\&. "
 .ti -1c
 .RI "void \fBgpioSeLFxn0\fP (unsigned int index)"
 .br
@@ -257,7 +257,7 @@ Definition at line 49 of file TI_Joystick\&.c\&.
 .PP
 Referenced by arm(), disarm(), joystick_fnx(), and set_flight_controls()\&.
 .SS "uint8_t ready_for_data"
-ready_for_data Global 8 bit variable for controlling the data transfer 
+ready_for_data Global 8 bit variable for signalling that the copter is ready for receiving data 
 .PP
 Definition at line 23 of file RN4678\&.c\&.
 .PP

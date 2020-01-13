@@ -137,10 +137,10 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RN4678_8h.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">init_bt</a> ()</td></tr>
-<tr class="memdesc:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup of the GPIO pins and Peripherable ports for the RN4678 module.  <a href="RN4678_8h.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">More...</a><br /></td></tr>
+<tr class="memdesc:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup of the GPIO pins and Peripherable ports for the RN4678 module and initialize the RN4678.  <a href="RN4678_8h.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">More...</a><br /></td></tr>
 <tr class="separator:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a364634124ac8b113b6d244da6b053528"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RN4678_8h.html#a364634124ac8b113b6d244da6b053528">send_pac</a> (char *data, size_t size)</td></tr>
-<tr class="memdesc:a364634124ac8b113b6d244da6b053528"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to send Multiwii command to the quadcopter via bluetooth. The header and the command are packed in one packet of bytes. Activate the GPIO port for sending data check if port is ready and send data using UART write and wait till bytes is completely written and turnoff GPIO pin.  <a href="RN4678_8h.html#a364634124ac8b113b6d244da6b053528">More...</a><br /></td></tr>
+<tr class="memdesc:a364634124ac8b113b6d244da6b053528"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to send Multiwii command to the quadcopter via bluetooth. The header and the command are packed in one packet of bytes. UART Flow Control is used and implemented in the Software for the communication with the RN4678.  <a href="RN4678_8h.html#a364634124ac8b113b6d244da6b053528">More...</a><br /></td></tr>
 <tr class="separator:a364634124ac8b113b6d244da6b053528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -501,11 +501,11 @@ Dennis Kwame Addo es19m006</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>nothing but log and abort of failure to setup task for the BLUE Module </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00165">165</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00161">161</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
-<p class="reference">References <a class="el" href="RN4678_8h_source.html#l00052">RN4678_CTS</a>, <a class="el" href="RN4678_8h_source.html#l00053">RN4678_CTS_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00050">RN4678_RTS</a>, <a class="el" href="RN4678_8h_source.html#l00051">RN4678_RTS_PORT</a>, <a class="el" href="RN4678_8c_source.html#l00093">RN4678Fxn()</a>, <a class="el" href="RN4678_8h_source.html#l00048">RST</a>, <a class="el" href="RN4678_8h_source.html#l00049">RST_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00062">STATUS1</a>, <a class="el" href="RN4678_8h_source.html#l00063">STATUS1_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00064">STATUS2</a>, <a class="el" href="RN4678_8h_source.html#l00065">STATUS2_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00046">SW_BTN</a>, <a class="el" href="RN4678_8h_source.html#l00047">SW_BTN_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00054">U6RX</a>, <a class="el" href="RN4678_8h_source.html#l00055">U6RX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00057">U6TX</a>, <a class="el" href="RN4678_8h_source.html#l00058">U6TX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00059">U6TX_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00060">WAKEUP</a>, and <a class="el" href="RN4678_8h_source.html#l00061">WAKEUP_PORT</a>.</p>
+<p class="reference">References <a class="el" href="RN4678_8h_source.html#l00052">RN4678_CTS</a>, <a class="el" href="RN4678_8h_source.html#l00053">RN4678_CTS_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00050">RN4678_RTS</a>, <a class="el" href="RN4678_8h_source.html#l00051">RN4678_RTS_PORT</a>, <a class="el" href="RN4678_8c_source.html#l00089">RN4678Fxn()</a>, <a class="el" href="RN4678_8h_source.html#l00048">RST</a>, <a class="el" href="RN4678_8h_source.html#l00049">RST_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00062">STATUS1</a>, <a class="el" href="RN4678_8h_source.html#l00063">STATUS1_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00064">STATUS2</a>, <a class="el" href="RN4678_8h_source.html#l00065">STATUS2_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00046">SW_BTN</a>, <a class="el" href="RN4678_8h_source.html#l00047">SW_BTN_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00054">U6RX</a>, <a class="el" href="RN4678_8h_source.html#l00055">U6RX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00057">U6TX</a>, <a class="el" href="RN4678_8h_source.html#l00058">U6TX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00059">U6TX_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00060">WAKEUP</a>, and <a class="el" href="RN4678_8h_source.html#l00061">WAKEUP_PORT</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="StartBIOS_8c_source.html#l00046">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="StartBIOS_8c_source.html#l00045">main()</a>.</p>
 
 </div>
 </div>
@@ -543,7 +543,7 @@ Dennis Kwame Addo es19m006</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00037">37</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00035">35</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
 <p class="reference">References <a class="el" href="RN4678_8h_source.html#l00052">RN4678_CTS</a>, <a class="el" href="RN4678_8h_source.html#l00053">RN4678_CTS_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00050">RN4678_RTS</a>, <a class="el" href="RN4678_8h_source.html#l00051">RN4678_RTS_PORT</a>, and <a class="el" href="RN4678_8c_source.html#l00021">uart</a>.</p>
 
@@ -557,7 +557,7 @@ Dennis Kwame Addo es19m006</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_1237781fca6b12176f6cde149533a3aa.html">local_inc</a></li><li class="navelem"><a class="el" href="RN4678_8h.html">RN4678.h</a></li>
-    <li class="footer">Generated on Mon Jan 13 2020 17:08:56 for copter_project by
+    <li class="footer">Generated on Mon Jan 13 2020 19:20:52 for copter_project by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>
   </ul>

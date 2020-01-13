@@ -86,53 +86,53 @@ $(document).ready(function(){initNavTree('StartBIOS_8c_source.html','');});
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment"> * NOTE: All local variables in main() will be discarded once BIOS_start() is called.</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">   46</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    uint32_t ui32SysClock;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">/* Call board init functions. */</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    ui32SysClock = <a class="code" href="Board_8h.html#a5c38860f7ecab5bf0d4574c25e28f447">Board_initGeneral</a>(120*1000*1000);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    (void)ui32SysClock; <span class="comment">// We don&#39;t really need this (yet)</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="Board_8h.html#a8c4742b6f975e68cddb872667ce5a4a8">Board_initGPIO</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="comment">// initialize the RN4678 and start the communication task</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="RN4678_8h.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">init_bt</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    System_printf(<span class="stringliteral">&quot;Created RN4678 Task\n&quot;</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    System_flush();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">   45</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    uint32_t ui32SysClock;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">/* Call board init functions. */</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    ui32SysClock = <a class="code" href="Board_8h.html#a5c38860f7ecab5bf0d4574c25e28f447">Board_initGeneral</a>(120*1000*1000);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    (void)ui32SysClock; <span class="comment">// We don&#39;t really need this (yet)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="Board_8h.html#a8c4742b6f975e68cddb872667ce5a4a8">Board_initGPIO</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// initialize the RN4678</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="RN4678_8h.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">init_bt</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    System_printf(<span class="stringliteral">&quot;Created RN4678 Task\n&quot;</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    System_flush();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="TI__Joystick_8h.html#a7518892ca95ac7f1889c955c051ce485">EdM_ADC_Init</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    System_printf(<span class="stringliteral">&quot;Setting up ADC for Joystick Done!! \n&quot;</span>);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    System_flush();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="TI__Joystick_8h.html#a81c2344c64eb498fe926d115e9fd56f9">setUpJoyStick_Task</a>();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    System_printf(<span class="stringliteral">&quot;Set up EduMiki Joystick Task !! \n&quot;</span>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    System_flush();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="TI__Joystick_8h.html#a7518892ca95ac7f1889c955c051ce485">EdM_ADC_Init</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    System_printf(<span class="stringliteral">&quot;Setting up ADC for Joystick Done!! \n&quot;</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    System_flush();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="TI__Joystick_8h.html#a81c2344c64eb498fe926d115e9fd56f9">setUpJoyStick_Task</a>();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    System_printf(<span class="stringliteral">&quot;Set up EduMiki Joystick Task !! \n&quot;</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    System_flush();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">/* SysMin will only print to the console upon calling flush or exit */</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    System_printf(<span class="stringliteral">&quot;Start BIOS\n&quot;</span>);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    System_flush();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">/* Start BIOS */</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    BIOS_start();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">/* SysMin will only print to the console upon calling flush or exit */</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    System_printf(<span class="stringliteral">&quot;Start BIOS\n&quot;</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    System_flush();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">/* Start BIOS */</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    BIOS_start();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aTI__Joystick_8h_html_a81c2344c64eb498fe926d115e9fd56f9"><div class="ttname"><a href="TI__Joystick_8h.html#a81c2344c64eb498fe926d115e9fd56f9">setUpJoyStick_Task</a></div><div class="ttdeci">void setUpJoyStick_Task()</div><div class="ttdoc">Set up task for the Joystick controller with the hight task priority for fast pulling of the ADC valu...</div><div class="ttdef"><b>Definition:</b> <a href="TI__Joystick_8c_source.html#l00145">TI_Joystick.c:145</a></div></div>
 <div class="ttc" id="aTI__Joystick_8h_html_a7518892ca95ac7f1889c955c051ce485"><div class="ttname"><a href="TI__Joystick_8h.html#a7518892ca95ac7f1889c955c051ce485">EdM_ADC_Init</a></div><div class="ttdeci">void EdM_ADC_Init(void)</div><div class="ttdoc">Set up the GPIO port and pins for the ADC driver which is used to read the ADC value for the x,...</div><div class="ttdef"><b>Definition:</b> <a href="TI__Joystick_8c_source.html#l00098">TI_Joystick.c:98</a></div></div>
 <div class="ttc" id="aTI__Joystick_8h_html"><div class="ttname"><a href="TI__Joystick_8h.html">TI_Joystick.h</a></div><div class="ttdoc">Application for getting Joystick data, x y-axis ADC values, accelerometer and converting them to the ...</div></div>
-<div class="ttc" id="aRN4678_8h_html_a68af12a505f8ea5f59a24f3b9f4eb8a4"><div class="ttname"><a href="RN4678_8h.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">init_bt</a></div><div class="ttdeci">void init_bt()</div><div class="ttdoc">Setup of the GPIO pins and Peripherable ports for the RN4678 module.</div><div class="ttdef"><b>Definition:</b> <a href="RN4678_8c_source.html#l00165">RN4678.c:165</a></div></div>
-<div class="ttc" id="aStartBIOS_8c_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdoc">The Entry point of the quadcopter application. Setting up board specific pins/GPIO init and setup the...</div><div class="ttdef"><b>Definition:</b> <a href="StartBIOS_8c_source.html#l00046">StartBIOS.c:46</a></div></div>
+<div class="ttc" id="aRN4678_8h_html_a68af12a505f8ea5f59a24f3b9f4eb8a4"><div class="ttname"><a href="RN4678_8h.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">init_bt</a></div><div class="ttdeci">void init_bt()</div><div class="ttdoc">Setup of the GPIO pins and Peripherable ports for the RN4678 module and initialize the RN4678.</div><div class="ttdef"><b>Definition:</b> <a href="RN4678_8c_source.html#l00161">RN4678.c:161</a></div></div>
+<div class="ttc" id="aStartBIOS_8c_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="StartBIOS_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdoc">The Entry point of the quadcopter application. Setting up board specific pins/GPIO init and initializ...</div><div class="ttdef"><b>Definition:</b> <a href="StartBIOS_8c_source.html#l00045">StartBIOS.c:45</a></div></div>
 <div class="ttc" id="aBoard_8h_html_a5c38860f7ecab5bf0d4574c25e28f447"><div class="ttname"><a href="Board_8h.html#a5c38860f7ecab5bf0d4574c25e28f447">Board_initGeneral</a></div><div class="ttdeci">#define Board_initGeneral</div><div class="ttdef"><b>Definition:</b> <a href="Board_8h_source.html#l00043">Board.h:43</a></div></div>
 <div class="ttc" id="aBoard_8h_html"><div class="ttname"><a href="Board_8h.html">Board.h</a></div></div>
 <div class="ttc" id="aBoard_8h_html_a8c4742b6f975e68cddb872667ce5a4a8"><div class="ttname"><a href="Board_8h.html#a8c4742b6f975e68cddb872667ce5a4a8">Board_initGPIO</a></div><div class="ttdeci">#define Board_initGPIO</div><div class="ttdef"><b>Definition:</b> <a href="Board_8h_source.html#l00044">Board.h:44</a></div></div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('StartBIOS_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="StartBIOS_8c.html">StartBIOS.c</a></li>
-    <li class="footer">Generated on Mon Jan 13 2020 17:08:56 for copter_project by
+    <li class="footer">Generated on Mon Jan 13 2020 19:20:52 for copter_project by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>
   </ul>

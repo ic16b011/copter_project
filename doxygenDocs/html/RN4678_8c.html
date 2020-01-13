@@ -81,16 +81,16 @@ $(document).ready(function(){initNavTree('RN4678_8c.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a364634124ac8b113b6d244da6b053528"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RN4678_8c.html#a364634124ac8b113b6d244da6b053528">send_pac</a> (char *data, size_t size)</td></tr>
-<tr class="memdesc:a364634124ac8b113b6d244da6b053528"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to send Multiwii command to the quadcopter via bluetooth. The header and the command are packed in one packet of bytes. Activate the GPIO port for sending data check if port is ready and send data using UART write and wait till bytes is completely written and turnoff GPIO pin.  <a href="RN4678_8c.html#a364634124ac8b113b6d244da6b053528">More...</a><br /></td></tr>
+<tr class="memdesc:a364634124ac8b113b6d244da6b053528"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to send Multiwii command to the quadcopter via bluetooth. The header and the command are packed in one packet of bytes. UART Flow Control is used and implemented in the Software for the communication with the RN4678.  <a href="RN4678_8c.html#a364634124ac8b113b6d244da6b053528">More...</a><br /></td></tr>
 <tr class="separator:a364634124ac8b113b6d244da6b053528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf544fa3cacf45a0e8a3b69e2e22928e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RN4678_8c.html#abf544fa3cacf45a0e8a3b69e2e22928e">start_com</a> (char *cmd, uint8_t size, uint8_t retsize, char *input)</td></tr>
-<tr class="memdesc:abf544fa3cacf45a0e8a3b69e2e22928e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to send Multiwii command to the quadcopter via bluetooth. The header and the command are packed in one packet of bytes. Activate the GPIO port for sending data check if port is ready and send data using UART write and wait till bytes is completely written and turnoff GPIO pin.  <a href="RN4678_8c.html#abf544fa3cacf45a0e8a3b69e2e22928e">More...</a><br /></td></tr>
+<tr class="memdesc:abf544fa3cacf45a0e8a3b69e2e22928e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to send commands to the RN4678 for setting up the communication via bluetooth. UART Flow Control is used and implemented in the Software for the communication with the RN4678. In the initialization phase every command sent to the RN4678 is answered by the module. This answer is read and returned to the calling function.  <a href="RN4678_8c.html#abf544fa3cacf45a0e8a3b69e2e22928e">More...</a><br /></td></tr>
 <tr class="separator:abf544fa3cacf45a0e8a3b69e2e22928e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a326f2d173977da8d29b414ced31e69ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RN4678_8c.html#a326f2d173977da8d29b414ced31e69ec">RN4678Fxn</a> (UArg arg0, UArg arg1)</td></tr>
-<tr class="memdesc:a326f2d173977da8d29b414ced31e69ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is RN4678 task. This task is managed by the RTOS task manager using the multi-task priority scheduling. A connection is made with the bluetooth device (RN4678 module) after setting up the UART. This glabal uart is then used to later send command to the (RN4678 module).  <a href="RN4678_8c.html#a326f2d173977da8d29b414ced31e69ec">More...</a><br /></td></tr>
+<tr class="memdesc:a326f2d173977da8d29b414ced31e69ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is RN4678 initialization task. This task is managed by the RTOS task manager using the multi-task priority scheduling. A connection is set up with the bluetooth device (RN4678 module) after setting up the UART. The command mode of the RN4678 is used to connect it to the quadcopter.  <a href="RN4678_8c.html#a326f2d173977da8d29b414ced31e69ec">More...</a><br /></td></tr>
 <tr class="separator:a326f2d173977da8d29b414ced31e69ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="RN4678_8c.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">init_bt</a> ()</td></tr>
-<tr class="memdesc:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup of the GPIO pins and Peripherable ports for the RN4678 module.  <a href="RN4678_8c.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">More...</a><br /></td></tr>
+<tr class="memdesc:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup of the GPIO pins and Peripherable ports for the RN4678 module and initialize the RN4678.  <a href="RN4678_8c.html#a68af12a505f8ea5f59a24f3b9f4eb8a4">More...</a><br /></td></tr>
 <tr class="separator:a68af12a505f8ea5f59a24f3b9f4eb8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -132,11 +132,11 @@ Dennis Kwame Addo es19m006 </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>nothing but log and abort of failure to setup task for the BLUE Module </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00165">165</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00161">161</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
-<p class="reference">References <a class="el" href="RN4678_8h_source.html#l00052">RN4678_CTS</a>, <a class="el" href="RN4678_8h_source.html#l00053">RN4678_CTS_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00050">RN4678_RTS</a>, <a class="el" href="RN4678_8h_source.html#l00051">RN4678_RTS_PORT</a>, <a class="el" href="RN4678_8c_source.html#l00093">RN4678Fxn()</a>, <a class="el" href="RN4678_8h_source.html#l00048">RST</a>, <a class="el" href="RN4678_8h_source.html#l00049">RST_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00062">STATUS1</a>, <a class="el" href="RN4678_8h_source.html#l00063">STATUS1_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00064">STATUS2</a>, <a class="el" href="RN4678_8h_source.html#l00065">STATUS2_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00046">SW_BTN</a>, <a class="el" href="RN4678_8h_source.html#l00047">SW_BTN_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00054">U6RX</a>, <a class="el" href="RN4678_8h_source.html#l00055">U6RX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00057">U6TX</a>, <a class="el" href="RN4678_8h_source.html#l00058">U6TX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00059">U6TX_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00060">WAKEUP</a>, and <a class="el" href="RN4678_8h_source.html#l00061">WAKEUP_PORT</a>.</p>
+<p class="reference">References <a class="el" href="RN4678_8h_source.html#l00052">RN4678_CTS</a>, <a class="el" href="RN4678_8h_source.html#l00053">RN4678_CTS_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00050">RN4678_RTS</a>, <a class="el" href="RN4678_8h_source.html#l00051">RN4678_RTS_PORT</a>, <a class="el" href="RN4678_8c_source.html#l00089">RN4678Fxn()</a>, <a class="el" href="RN4678_8h_source.html#l00048">RST</a>, <a class="el" href="RN4678_8h_source.html#l00049">RST_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00062">STATUS1</a>, <a class="el" href="RN4678_8h_source.html#l00063">STATUS1_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00064">STATUS2</a>, <a class="el" href="RN4678_8h_source.html#l00065">STATUS2_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00046">SW_BTN</a>, <a class="el" href="RN4678_8h_source.html#l00047">SW_BTN_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00054">U6RX</a>, <a class="el" href="RN4678_8h_source.html#l00055">U6RX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00057">U6TX</a>, <a class="el" href="RN4678_8h_source.html#l00058">U6TX_PIN</a>, <a class="el" href="RN4678_8h_source.html#l00059">U6TX_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00060">WAKEUP</a>, and <a class="el" href="RN4678_8h_source.html#l00061">WAKEUP_PORT</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="StartBIOS_8c_source.html#l00046">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="StartBIOS_8c_source.html#l00045">main()</a>.</p>
 
 </div>
 </div>
@@ -175,11 +175,11 @@ Dennis Kwame Addo es19m006 </dd></dl>
 <p>PNB: This is used in the CLI application</p>
 <dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00093">93</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00089">89</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
-<p class="reference">References <a class="el" href="Board_8h_source.html#l00087">Board_UART6</a>, <a class="el" href="RN4678_8c_source.html#l00023">ready_for_data</a>, <a class="el" href="RN4678_8c_source.html#l00062">start_com()</a>, <a class="el" href="RN4678_8h_source.html#l00062">STATUS1</a>, <a class="el" href="RN4678_8h_source.html#l00063">STATUS1_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00064">STATUS2</a>, <a class="el" href="RN4678_8h_source.html#l00065">STATUS2_PORT</a>, and <a class="el" href="RN4678_8c_source.html#l00021">uart</a>.</p>
+<p class="reference">References <a class="el" href="Board_8h_source.html#l00087">Board_UART6</a>, <a class="el" href="RN4678_8c_source.html#l00023">ready_for_data</a>, <a class="el" href="RN4678_8c_source.html#l00059">start_com()</a>, <a class="el" href="RN4678_8h_source.html#l00062">STATUS1</a>, <a class="el" href="RN4678_8h_source.html#l00063">STATUS1_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00064">STATUS2</a>, <a class="el" href="RN4678_8h_source.html#l00065">STATUS2_PORT</a>, and <a class="el" href="RN4678_8c_source.html#l00021">uart</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="RN4678_8c_source.html#l00165">init_bt()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="RN4678_8c_source.html#l00161">init_bt()</a>.</p>
 
 </div>
 </div>
@@ -217,7 +217,7 @@ Dennis Kwame Addo es19m006 </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00037">37</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00035">35</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
 <p class="reference">References <a class="el" href="RN4678_8h_source.html#l00052">RN4678_CTS</a>, <a class="el" href="RN4678_8h_source.html#l00053">RN4678_CTS_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00050">RN4678_RTS</a>, <a class="el" href="RN4678_8h_source.html#l00051">RN4678_RTS_PORT</a>, and <a class="el" href="RN4678_8c_source.html#l00021">uart</a>.</p>
 
@@ -264,21 +264,21 @@ Dennis Kwame Addo es19m006 </dd></dl>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>Command to send to the quadcopter </td></tr>
+    <tr><td class="paramname">cmd</td><td>Command to send to the RN4678 </td></tr>
     <tr><td class="paramname">size</td><td>Total size of data to send. </td></tr>
     <tr><td class="paramname">retsize</td><td>Total size of the return bytes (input data). </td></tr>
-    <tr><td class="paramname">input</td><td>Input data from the commandline.</td></tr>
+    <tr><td class="paramname">input</td><td>Answer from the RN4678.</td></tr>
   </table>
   </dd>
 </dl>
 <p>PNB: This is used in the CLI application</p>
 <dl class="section return"><dt>Returns</dt><dd>Nothing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00062">62</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00059">59</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
 <p class="reference">References <a class="el" href="RN4678_8h_source.html#l00052">RN4678_CTS</a>, <a class="el" href="RN4678_8h_source.html#l00053">RN4678_CTS_PORT</a>, <a class="el" href="RN4678_8h_source.html#l00050">RN4678_RTS</a>, <a class="el" href="RN4678_8h_source.html#l00051">RN4678_RTS_PORT</a>, and <a class="el" href="RN4678_8c_source.html#l00021">uart</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="RN4678_8c_source.html#l00093">RN4678Fxn()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="RN4678_8c_source.html#l00089">RN4678Fxn()</a>.</p>
 
 </div>
 </div>
@@ -294,11 +294,11 @@ Dennis Kwame Addo es19m006 </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>ready_for_data Global 8 bit variable for controlling the data transfer </p>
+<p>ready_for_data Global 8 bit variable for signalling that the copter is ready for receiving data </p>
 
 <p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00023">23</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="TI__Joystick_8c_source.html#l00179">joystick_fnx()</a>, and <a class="el" href="RN4678_8c_source.html#l00093">RN4678Fxn()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="TI__Joystick_8c_source.html#l00179">joystick_fnx()</a>, and <a class="el" href="RN4678_8c_source.html#l00089">RN4678Fxn()</a>.</p>
 
 </div>
 </div>
@@ -313,11 +313,11 @@ Dennis Kwame Addo es19m006 </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>uart Global UART handler for UART write command </p>
+<p>uart Global UART handler for UART reading/writing </p>
 
 <p class="definition">Definition at line <a class="el" href="RN4678_8c_source.html#l00021">21</a> of file <a class="el" href="RN4678_8c_source.html">RN4678.c</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="RN4678_8c_source.html#l00093">RN4678Fxn()</a>, <a class="el" href="RN4678_8c_source.html#l00037">send_pac()</a>, and <a class="el" href="RN4678_8c_source.html#l00062">start_com()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="RN4678_8c_source.html#l00089">RN4678Fxn()</a>, <a class="el" href="RN4678_8c_source.html#l00035">send_pac()</a>, and <a class="el" href="RN4678_8c_source.html#l00059">start_com()</a>.</p>
 
 </div>
 </div>
@@ -327,7 +327,7 @@ Dennis Kwame Addo es19m006 </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="RN4678_8c.html">RN4678.c</a></li>
-    <li class="footer">Generated on Mon Jan 13 2020 17:08:56 for copter_project by
+    <li class="footer">Generated on Mon Jan 13 2020 19:20:52 for copter_project by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>
   </ul>
