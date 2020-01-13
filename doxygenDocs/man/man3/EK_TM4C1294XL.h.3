@@ -1,0 +1,424 @@
+.TH "EK_TM4C1294XL.h" 3 "Mon Jan 13 2020" "Version 1.0" "copter_project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+EK_TM4C1294XL.h \- EK_TM4C1294XL Board Specific APIs\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdint\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBI2CM_8\fP   1"
+.br
+.ti -1c
+.RI "#define \fBSSIM_2\fP   1"
+.br
+.ti -1c
+.RI "#define \fBEK_TM4C1294XL_LED_OFF\fP   (0)"
+.br
+.ti -1c
+.RI "#define \fBEK_TM4C1294XL_LED_ON\fP   (1)"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_EMACName\fP \fBEK_TM4C1294XL_EMACName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_GPIOName\fP \fBEK_TM4C1294XL_GPIOName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_I2CName\fP \fBEK_TM4C1294XL_I2CName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_PWMName\fP \fBEK_TM4C1294XL_PWMName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_SDSPIName\fP \fBEK_TM4C1294XL_SDSPIName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_SPIName\fP \fBEK_TM4C1294XL_SPIName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_UARTName\fP \fBEK_TM4C1294XL_UARTName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_USBMode\fP \fBEK_TM4C1294XL_USBMode\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_USBMSCHFatFsName\fP \fBEK_TM4C1294XL_USBMSCHFatFsName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_WatchdogName\fP \fBEK_TM4C1294XL_WatchdogName\fP"
+.br
+.ti -1c
+.RI "typedef enum \fBEK_TM4C1294XL_WiFiName\fP \fBEK_TM4C1294XL_WiFiName\fP"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_EMACName\fP { \fBEK_TM4C1294XL_EMAC0\fP = 0, \fBEK_TM4C1294XL_EMACCOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_GPIOName\fP { \fBEK_TM4C1294XL_USR_SW1\fP = 0, \fBEK_TM4C1294XL_USR_SW2\fP, \fBEK_TM4C1294XL_EDU_SEL\fP, \fBEK_TM4C1294XL_D1\fP, \fBEK_TM4C1294XL_D2\fP, \fBEK_TM4C1294XL_GPIOCOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_I2CName\fP { \fBEK_TM4C1294XL_I2C8\fP, \fBEK_TM4C1294XL_I2CCOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_PWMName\fP { \fBEK_TM4C1294XL_PWM0\fP = 0, \fBEK_TM4C1294XL_PWMCOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_SDSPIName\fP { \fBEK_TM4C1294XL_SDSPI0\fP = 0, \fBEK_TM4C1294XL_SDSPI1\fP, \fBEK_TM4C1294XL_SDSPICOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_SPIName\fP { \fBEK_TM4C1294XL_SPI2\fP, \fBEK_TM4C1294XL_SPICOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_UARTName\fP { \fBEK_TM4C1294XL_UART0\fP = 0, \fBEK_TM4C1294XL_UART6\fP, \fBEK_TM4C1294XL_UARTCOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_USBMode\fP { \fBEK_TM4C1294XL_USBDEVICE\fP, \fBEK_TM4C1294XL_USBHOST\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_USBMSCHFatFsName\fP { \fBEK_TM4C1294XL_USBMSCHFatFs0\fP = 0, \fBEK_TM4C1294XL_USBMSCHFatFsCOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_WatchdogName\fP { \fBEK_TM4C1294XL_WATCHDOG0\fP = 0, \fBEK_TM4C1294XL_WATCHDOGCOUNT\fP }"
+.br
+.ti -1c
+.RI "enum \fBEK_TM4C1294XL_WiFiName\fP { \fBEK_TM4C1294XL_WIFI\fP = 0, \fBEK_TM4C1294XL_WIFICOUNT\fP }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "uint32_t \fBEK_TM4C1294XL_initGeneral\fP (uint32_t sysclock)"
+.br
+.RI "Initialize the general board specific settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initEMAC\fP (char *mac_addr)"
+.br
+.RI "Initialize board specific EMAC settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initGPIO\fP (void)"
+.br
+.RI "Initialize board specific GPIO settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initI2C\fP (void)"
+.br
+.RI "Initialize board specific I2C settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initCAN\fP (void)"
+.br
+.RI "Initialize board specific CAN settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initPWM\fP (void)"
+.br
+.RI "Initialize board specific PWM settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initSDSPI\fP (void)"
+.br
+.RI "Initialize board specific SDSPI settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initSPI\fP (void)"
+.br
+.RI "Initialize board specific SPI settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initUART\fP (void)"
+.br
+.RI "Initialize board specific UART settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initUSB\fP (\fBEK_TM4C1294XL_USBMode\fP usbMode)"
+.br
+.RI "Initialize board specific USB settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initUSBMSCHFatFs\fP (void)"
+.br
+.RI "Initialize board specific USBMSCHFatFs settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initWatchdog\fP (void)"
+.br
+.RI "Initialize board specific Watchdog settings\&. "
+.ti -1c
+.RI "void \fBEK_TM4C1294XL_initWiFi\fP (void)"
+.br
+.RI "Initialize board specific WiFi settings\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+============================================================================
+.PP
+The EK_TM4C1294XL header file should be included in an application as follows: 
+.PP
+.nf
+#include <EK_TM4C1294XL\&.h>
+
+.fi
+.PP
+.PP
+.PP
+ 
+.PP
+Definition in file \fBEK_TM4C1294XL\&.h\fP\&.
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define EK_TM4C1294XL_LED_OFF   (0)"
+
+.PP
+Definition at line 82 of file EK_TM4C1294XL\&.h\&.
+.SS "#define EK_TM4C1294XL_LED_ON   (1)"
+
+.PP
+Definition at line 83 of file EK_TM4C1294XL\&.h\&.
+.SS "#define I2CM_8   1"
+
+.PP
+Definition at line 65 of file EK_TM4C1294XL\&.h\&.
+.SS "#define SSIM_2   1"
+
+.PP
+Definition at line 68 of file EK_TM4C1294XL\&.h\&.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef enum \fBEK_TM4C1294XL_EMACName\fP  \fBEK_TM4C1294XL_EMACName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_GPIOName\fP  \fBEK_TM4C1294XL_GPIOName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_I2CName\fP  \fBEK_TM4C1294XL_I2CName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_PWMName\fP  \fBEK_TM4C1294XL_PWMName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_SDSPIName\fP  \fBEK_TM4C1294XL_SDSPIName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_SPIName\fP  \fBEK_TM4C1294XL_SPIName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_UARTName\fP  \fBEK_TM4C1294XL_UARTName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_USBMode\fP  \fBEK_TM4C1294XL_USBMode\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_USBMSCHFatFsName\fP  \fBEK_TM4C1294XL_USBMSCHFatFsName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_WatchdogName\fP  \fBEK_TM4C1294XL_WatchdogName\fP"
+
+.SS "typedef enum \fBEK_TM4C1294XL_WiFiName\fP  \fBEK_TM4C1294XL_WiFiName\fP"
+
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBEK_TM4C1294XL_EMACName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_EMAC0 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_EMACCOUNT \fP\fP
+.PP
+Definition at line 89 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_GPIOName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_USR_SW1 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_USR_SW2 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_EDU_SEL \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_D1 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_D2 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_GPIOCOUNT \fP\fP
+.PP
+Definition at line 99 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_I2CName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_I2C8 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_I2CCOUNT \fP\fP
+.PP
+Definition at line 113 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_PWMName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_PWM0 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_PWMCOUNT \fP\fP
+.PP
+Definition at line 129 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_SDSPIName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_SDSPI0 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_SDSPI1 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_SDSPICOUNT \fP\fP
+.PP
+Definition at line 139 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_SPIName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_SPI2 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_SPICOUNT \fP\fP
+.PP
+Definition at line 150 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_UARTName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_UART0 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_UART6 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_UARTCOUNT \fP\fP
+.PP
+Definition at line 165 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_USBMode\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_USBDEVICE \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_USBHOST \fP\fP
+.PP
+Definition at line 175 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_USBMSCHFatFsName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_USBMSCHFatFs0 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_USBMSCHFatFsCOUNT \fP\fP
+.PP
+Definition at line 184 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_WatchdogName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_WATCHDOG0 \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_WATCHDOGCOUNT \fP\fP
+.PP
+Definition at line 194 of file EK_TM4C1294XL\&.h\&.
+.SS "enum \fBEK_TM4C1294XL_WiFiName\fP"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fIEK_TM4C1294XL_WIFI \fP\fP
+.TP
+\fB\fIEK_TM4C1294XL_WIFICOUNT \fP\fP
+.PP
+Definition at line 204 of file EK_TM4C1294XL\&.h\&.
+.SH "Function Documentation"
+.PP 
+.SS "void EK_TM4C1294XL_initCAN (void)"
+This function initializes the board specific CAN settings and then calls the CAN_init API to initialize the CAN module\&.
+.PP
+The CAN peripherals controlled by the CAN module are determined by the CAN_config variable\&. 
+.SS "void EK_TM4C1294XL_initEMAC (char * mac_addr)"
+This function initializes the board specific EMAC settings and then calls the EMAC_init API to initialize the EMAC module\&.
+.PP
+The EMAC address is programmed as part of this call\&. The MAC addressed passed as parameter is favored over the on in flash if available
+.PP
+\fBParameters\fP
+.RS 4
+\fImac_addr\fP pointer to the array holding this devices mac address 
+.RE
+.PP
+
+.SS "uint32_t EK_TM4C1294XL_initGeneral (uint32_t sysclock)"
+This function initializes the general board specific settings\&. This includes:
+.IP "\(bu" 2
+Enable clock sources for peripherals 
+.PP
+
+.SS "void EK_TM4C1294XL_initGPIO (void)"
+This function initializes the board specific GPIO settings and then calls the GPIO_init API to initialize the GPIO module\&.
+.PP
+The GPIOs controlled by the GPIO module are determined by the GPIO_PinConfig variable\&. 
+.SS "void EK_TM4C1294XL_initI2C (void)"
+This function initializes the board specific I2C settings and then calls the I2C_init API to initialize the I2C module\&.
+.PP
+The I2C peripherals controlled by the I2C module are determined by the I2C_config variable\&. 
+.SS "void EK_TM4C1294XL_initPWM (void)"
+This function initializes the board specific PWM settings and then calls the PWM_init API to initialize the PWM module\&.
+.PP
+The PWM peripherals controlled by the PWM module are determined by the PWM_config variable\&. 
+.SS "void EK_TM4C1294XL_initSDSPI (void)"
+This function initializes the board specific SDSPI settings and then calls the SDSPI_init API to initialize the SDSPI module\&.
+.PP
+The SDSPI peripherals controlled by the SDSPI module are determined by the SDSPI_config variable\&. 
+.SS "void EK_TM4C1294XL_initSPI (void)"
+This function initializes the board specific SPI settings and then calls the SPI_init API to initialize the SPI module\&.
+.PP
+The SPI peripherals controlled by the SPI module are determined by the SPI_config variable\&. 
+.SS "void EK_TM4C1294XL_initUART (void)"
+This function initializes the board specific UART settings and then calls the UART_init API to initialize the UART module\&.
+.PP
+The UART peripherals controlled by the UART module are determined by the UART_config variable\&. 
+.SS "void EK_TM4C1294XL_initUSB (\fBEK_TM4C1294XL_USBMode\fP usbMode)"
+This function initializes the board specific USB settings and pins based on the USB mode of operation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIusbMode\fP USB mode of operation 
+.RE
+.PP
+
+.SS "void EK_TM4C1294XL_initUSBMSCHFatFs (void)"
+This function initializes the board specific USBMSCHFatFs settings and then calls the USBMSCHFatFs_init API to initialize the USBMSCHFatFs module\&.
+.PP
+The USBMSCHFatFs peripherals controlled by the USBMSCHFatFs module are determined by the USBMSCHFatFs_config variable\&. 
+.SS "void EK_TM4C1294XL_initWatchdog (void)"
+This function initializes the board specific Watchdog settings and then calls the Watchdog_init API to initialize the Watchdog module\&.
+.PP
+The Watchdog peripherals controlled by the Watchdog module are determined by the Watchdog_config variable\&. 
+.SS "void EK_TM4C1294XL_initWiFi (void)"
+This function initializes the board specific WiFi settings and then calls the WiFi_init API to initialize the WiFi module\&.
+.PP
+The hardware resources controlled by the WiFi module are determined by the WiFi_config variable\&.
+.PP
+A SimpleLink CC3100 device or module is required and must be connected to use the WiFi driver\&. 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for copter_project from the source code\&.

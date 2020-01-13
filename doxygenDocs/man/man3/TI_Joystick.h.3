@@ -1,0 +1,258 @@
+.TH "TI_Joystick.h" 3 "Mon Jan 13 2020" "Version 1.0" "copter_project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TI_Joystick.h \- Application for getting Joystick data, x y-axis ADC values, accelerometer and converting them to the right values for controlling the quadcopter\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include 'inc/hw_memmap\&.h'\fP
+.br
+\fC#include 'driverlib/gpio\&.h'\fP
+.br
+\fC#include <ti/sysbios/knl/Mailbox\&.h>\fP
+.br
+\fC#include <xdc/runtime/Error\&.h>\fP
+.br
+\fC#include <ti/sysbios/knl/Event\&.h>\fP
+.br
+\fC#include <RN4678\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBraw_rc_frame\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBJOYS_GPIO_BASE\fP   GPIO_PORTE_BASE"
+.br
+.ti -1c
+.RI "#define \fBJOYS_ADC_BASE\fP   ADC0_BASE"
+.br
+.ti -1c
+.RI "#define \fBJOYS_TIMER_BASE\fP   TIMER0_BASE"
+.br
+.ti -1c
+.RI "#define \fBJOYS_SAMPLE_RATE\fP   4"
+.br
+.ti -1c
+.RI "#define \fBJOYS_X\fP   GPIO_PIN_4"
+.br
+.ti -1c
+.RI "#define \fBJOYS_Y\fP   GPIO_PIN_3"
+.br
+.ti -1c
+.RI "#define \fBJOYS_CH_X\fP   ADC_CTL_CH9"
+.br
+.ti -1c
+.RI "#define \fBJOYS_CH_Y\fP   ADC_CTL_CH0"
+.br
+.ti -1c
+.RI "#define \fBJOyACC_X\fP   GPIO_PIN_0"
+.br
+.ti -1c
+.RI "#define \fBJOyACC_Y\fP   GPIO_PIN_1"
+.br
+.ti -1c
+.RI "#define \fBJOyACC_Z\fP   GPIO_PIN_2"
+.br
+.ti -1c
+.RI "#define \fBJOyACC_ADC_BASE\fP   ADC1_BASE"
+.br
+.ti -1c
+.RI "#define \fBJOyACC_CH_X\fP   ADC_CTL_CH3"
+.br
+.ti -1c
+.RI "#define \fBJOyACC_CH_Y\fP   ADC_CTL_CH2"
+.br
+.ti -1c
+.RI "#define \fBJOyACC_CH_Z\fP   ADC_CTL_CH1"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBraw_rc_frame\fP \fBraw_rc_frame\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBEdM_ADC_Init\fP (void)"
+.br
+.RI "Set up the GPIO port and pins for the ADC driver which is used to read the ADC value for the x, y-axis, and accelerometer values of the EDUMIKI Joystick controller\&. "
+.ti -1c
+.RI "void \fBsetUpJoyStick_Task\fP ()"
+.br
+.RI "Set up task for the Joystick controller with the hight task priority for fast pulling of the ADC values\&. "
+.ti -1c
+.RI "void \fBinitSPI\fP (void)"
+.br
+.ti -1c
+.RI "void \fBsend_to_Screen\fP (char data)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBAuthor\fP
+.RS 4
+Alexander Österreicher es19m008 
+.PP
+Dennis Kwame Addo es19m006
+.RE
+.PP
+More information about the project can be found here 
+.PP
+\fBSee also\fP
+.RS 4
+https://embsys.technikum-wien.at/mio/mes/1/esw/project/project.html#_documentation
+.RE
+.PP
+\fBDate\fP
+.RS 4
+18\&.12\&.2019
+.RE
+.PP
+\fBVersion\fP
+.RS 4
+1\&.0
+.RE
+.PP
+\fBTodo\fP
+.RS 4
+All implentations must be contained in one method structure unless these functions @ are required by other programs/methods
+.RE
+.PP
+
+.PP
+Definition in file \fBTI_Joystick\&.h\fP\&.
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define JOyACC_ADC_BASE   ADC1_BASE"
+
+.PP
+Definition at line 70 of file TI_Joystick\&.h\&.
+.SS "#define JOyACC_CH_X   ADC_CTL_CH3"
+
+.PP
+Definition at line 72 of file TI_Joystick\&.h\&.
+.SS "#define JOyACC_CH_Y   ADC_CTL_CH2"
+
+.PP
+Definition at line 73 of file TI_Joystick\&.h\&.
+.SS "#define JOyACC_CH_Z   ADC_CTL_CH1"
+
+.PP
+Definition at line 74 of file TI_Joystick\&.h\&.
+.SS "#define JOyACC_X   GPIO_PIN_0"
+
+.PP
+Definition at line 66 of file TI_Joystick\&.h\&.
+.SS "#define JOyACC_Y   GPIO_PIN_1"
+
+.PP
+Definition at line 67 of file TI_Joystick\&.h\&.
+.SS "#define JOyACC_Z   GPIO_PIN_2"
+
+.PP
+Definition at line 68 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_ADC_BASE   ADC0_BASE"
+
+.PP
+Definition at line 55 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_CH_X   ADC_CTL_CH9"
+
+.PP
+Definition at line 62 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_CH_Y   ADC_CTL_CH0"
+
+.PP
+Definition at line 63 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_GPIO_BASE   GPIO_PORTE_BASE"
+--------------------------------------------------------------- defines -- 
+.PP
+Definition at line 54 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_SAMPLE_RATE   4"
+
+.PP
+Definition at line 58 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_TIMER_BASE   TIMER0_BASE"
+
+.PP
+Definition at line 56 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_X   GPIO_PIN_4"
+
+.PP
+Definition at line 60 of file TI_Joystick\&.h\&.
+.SS "#define JOYS_Y   GPIO_PIN_3"
+
+.PP
+Definition at line 61 of file TI_Joystick\&.h\&.
+.SH "Typedef Documentation"
+.PP 
+.SS "\fBraw_rc_frame\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "void EdM_ADC_Init (void)"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 98 of file TI_Joystick\&.c\&.
+.PP
+References Board_EduMIKI_SEL, gpioSeLFxn0(), JOyACC_ADC_BASE, JOyACC_CH_X, JOyACC_CH_Y, JOyACC_CH_Z, JOyACC_X, JOyACC_Y, JOyACC_Z, JOYS_ADC_BASE, JOYS_CH_X, JOYS_CH_Y, JOYS_GPIO_BASE, JOYS_X, and JOYS_Y\&.
+.PP
+Referenced by main()\&.
+.SS "void initSPI (void)"
+
+.SS "void send_to_Screen (char data)"
+
+.SS "void setUpJoyStick_Task (void)"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 145 of file TI_Joystick\&.c\&.
+.PP
+References joystick_fnx()\&.
+.PP
+Referenced by main()\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for copter_project from the source code\&.

@@ -1,0 +1,267 @@
+.TH "TI_Joystick.c" 3 "Mon Jan 13 2020" "Version 1.0" "copter_project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TI_Joystick.c \- Application for getting Joystick data, x y-axis ADC values, accelerometer and converting them to the right values for controlling the quadcopter\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <TI_Joystick\&.h>\fP
+.br
+\fC#include 'driverlib/debug\&.h'\fP
+.br
+\fC#include 'driverlib/sysctl\&.h'\fP
+.br
+\fC#include 'inc/hw_types\&.h'\fP
+.br
+\fC#include 'driverlib/adc\&.h'\fP
+.br
+\fC#include <ti/sysbios/BIOS\&.h>\fP
+.br
+\fC#include <ti/sysbios/knl/Event\&.h>\fP
+.br
+\fC#include <ti/sysbios/knl/Task\&.h>\fP
+.br
+\fC#include <xdc/cfg/global\&.h>\fP
+.br
+\fC#include <xdc/runtime/System\&.h>\fP
+.br
+\fC#include <xdc/runtime/Error\&.h>\fP
+.br
+\fC#include <xdc/runtime/Memory\&.h>\fP
+.br
+\fC#include 'inc/hw_memmap\&.h'\fP
+.br
+\fC#include 'driverlib/gpio\&.h'\fP
+.br
+\fC#include <ti/drivers/GPIO\&.h>\fP
+.br
+\fC#include <Board\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBjoystick_fnx\fP (UArg arg0)"
+.br
+.RI "This is the joystick RTOS task, also used for processing Joystick and accelerometer data\&. The ADC values needs to be processed to limit input signal to the upper and lower saturation values\&. set_flight_controls is then called to get data to the quadcopter by sending payload to the quadcopter via the send_pac function\&. "
+.ti -1c
+.RI "void \fBset_flight_controls\fP ()"
+.br
+.RI "Create a multi-wii packet from the controller values to control the quadcopter\&. send the payload to quadcopter via the Bluetooth module\&. "
+.ti -1c
+.RI "void \fBarm\fP ()"
+.br
+.RI "To start the quadcopter spinning\&. "
+.ti -1c
+.RI "void \fBdisarm\fP ()"
+.br
+.RI "To stop the quadcopter spinning\&. "
+.ti -1c
+.RI "void \fBgpioSeLFxn0\fP (unsigned int index)"
+.br
+.RI "This is Joystick middle button\&. Using simple Interrupt for arm and disarm function\&. "
+.ti -1c
+.RI "void \fBEdM_ADC_Init\fP (void)"
+.br
+.RI "Set up the GPIO port and pins for the ADC driver which is used to read the ADC value for the x, y-axis, and accelerometer values of the EDUMIKI Joystick controller\&. "
+.ti -1c
+.RI "void \fBsetUpJoyStick_Task\fP (void)"
+.br
+.RI "Set up task for the Joystick controller with the hight task priority for fast pulling of the ADC values\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBraw_rc_frame\fP \fBframe\fP"
+.br
+.ti -1c
+.RI "uint8_t \fBready_for_data\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBAuthor\fP
+.RS 4
+Alexander Österreicher es19m008 
+.PP
+Dennis Kwame Addo es19m006 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+18\&.12\&.2019
+.RE
+.PP
+More information about the project can be found here 
+.PP
+\fBSee also\fP
+.RS 4
+https://embsys.technikum-wien.at/mio/mes/1/esw/project/project.html#_documentation
+.RE
+.PP
+\fBVersion\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+
+.PP
+Definition in file \fBTI_Joystick\&.c\fP\&.
+.SH "Function Documentation"
+.PP 
+.SS "void arm ()"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 284 of file TI_Joystick\&.c\&.
+.PP
+References raw_rc_frame::arm, and frame\&.
+.SS "void disarm ()"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 302 of file TI_Joystick\&.c\&.
+.PP
+References raw_rc_frame::arm, and frame\&.
+.SS "void EdM_ADC_Init (void)"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 98 of file TI_Joystick\&.c\&.
+.PP
+References Board_EduMIKI_SEL, gpioSeLFxn0(), JOyACC_ADC_BASE, JOyACC_CH_X, JOyACC_CH_Y, JOyACC_CH_Z, JOyACC_X, JOyACC_Y, JOyACC_Z, JOYS_ADC_BASE, JOYS_CH_X, JOYS_CH_Y, JOYS_GPIO_BASE, JOYS_X, and JOYS_Y\&.
+.PP
+Referenced by main()\&.
+.SS "void gpioSeLFxn0 (unsigned int index)"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIindex\fP the button ID
+.RE
+.PP
+PNB:
+.PP
+\fBReturns\fP
+.RS 4
+Nothing 
+.RE
+.PP
+
+.PP
+Definition at line 69 of file TI_Joystick\&.c\&.
+.PP
+Referenced by EdM_ADC_Init()\&.
+.SS "void joystick_fnx (UArg arg0)"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIarg0\fP xdc argument to the RTOS task\&.
+.RE
+.PP
+PNB:
+.PP
+\fBReturns\fP
+.RS 4
+Nothing 
+.RE
+.PP
+
+.PP
+Definition at line 179 of file TI_Joystick\&.c\&.
+.PP
+References raw_rc_frame::azimuth, frame, JOyACC_ADC_BASE, raw_rc_frame::pitch, ready_for_data, raw_rc_frame::roll, set_flight_controls(), and raw_rc_frame::throttle\&.
+.PP
+Referenced by setUpJoyStick_Task()\&.
+.SS "void set_flight_controls ()"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 321 of file TI_Joystick\&.c\&.
+.PP
+References raw_rc_frame::arm, raw_rc_frame::azimuth, frame, raw_rc_frame::pitch, raw_rc_frame::roll, send_pac(), and raw_rc_frame::throttle\&.
+.PP
+Referenced by joystick_fnx()\&.
+.SS "void setUpJoyStick_Task (void)"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+.RE
+.PP
+
+.PP
+Definition at line 145 of file TI_Joystick\&.c\&.
+.PP
+References joystick_fnx()\&.
+.PP
+Referenced by main()\&.
+.SH "Variable Documentation"
+.PP 
+.SS "\fBraw_rc_frame\fP frame"
+
+.PP
+Definition at line 49 of file TI_Joystick\&.c\&.
+.PP
+Referenced by arm(), disarm(), joystick_fnx(), and set_flight_controls()\&.
+.SS "uint8_t ready_for_data"
+ready_for_data Global 8 bit variable for controlling the data transfer 
+.PP
+Definition at line 23 of file RN4678\&.c\&.
+.PP
+Referenced by joystick_fnx(), and RN4678Fxn()\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for copter_project from the source code\&.

@@ -1,16 +1,40 @@
-/*
- * RN4678.c
+/**
+ * @file RN4678.c
  *
- *  Created on: 06.12.2019
- *      Author: Alex
+ *
+ *@brief The GPIO setup and data transfer functions for the RN4678 module
+ *
+ * @author Alexander Ã–sterreicher  es19m008
+ * @author Dennis Kwame Addo       es19m006
+ * @date 06.12.2019
+ *
+ * @details More information about the project can be found here
+ * @see https://embsys.technikum-wien.at/mio/mes/1/esw/project/project.html#_documentation
+ *
+ * @version 1.0
+ *
+ *
  */
 #include "RN4678.h"
 
+/*! uart   Global UART handler for UART write command */
 UART_Handle uart;
+/*! ready_for_data   Global 8 bit variable for controlling the data transfer */
 uint8_t ready_for_data = 0;
 
-// send data packet
-void send_pac(char *data, uint8_t size)
+/*!
+ * @brief      This is used to send Multiwii command to the quadcopter via bluetooth.
+ *             The header and the command are packed in one packet of bytes.
+ *             Activate the GPIO port for sending data check if port is ready and
+ *             send data using UART write and wait till bytes is completely written and turnoff
+ *             GPIO pin.
+ *
+ *@param       data    Multiwii package in bytes to send.
+ *@param       size    Total size of data to send.
+ *
+ *@result      Nothing
+ * */
+void send_pac(char *data, size_t size)
 {
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, RN4678_CTS);
     while(GPIOPinRead(RN4678_RTS_PORT, RN4678_RTS) != 0x00);
@@ -19,7 +43,22 @@ void send_pac(char *data, uint8_t size)
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
 }
 
-// send commands to RN4678
+/*!
+ * @brief      This is used to send Multiwii command to the quadcopter via bluetooth.
+ *             The header and the command are packed in one packet of bytes.
+ *             Activate the GPIO port for sending data check if port is ready and
+ *             send data using UART write and wait till bytes is completely written and turnoff
+ *             GPIO pin.
+ *
+ *@param       cmd     Command to send to the quadcopter
+ *@param       size    Total size of data to send.
+ *@param       retsize Total size of the return bytes (input data).
+ *@param       input   Input data from the commandline.
+ *
+ * PNB: This is used in the CLI application
+ *
+ *@result      Nothing
+ * */
 void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
 {
     char inp[16] = { '\0' };
@@ -28,7 +67,7 @@ void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
     UART_write(uart, cmd, size); // enter command mode
     while(UARTBusy(UART6_BASE));
     GPIOPinWrite(RN4678_CTS_PORT, RN4678_CTS, 0);
-    UART_read(uart, &inp, retsize); // CMD sollte zurückkommen
+    UART_read(uart, &inp, retsize); // CMD sollte zurï¿½ckkommen
     strcpy(input, inp);
 #ifdef _DEBUG
     System_printf("%s\n", cmd);
@@ -37,7 +76,20 @@ void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
     Task_sleep(5);
 }
 
-// cyclic task for RN4678
+/*!
+ * @brief      This is RN4678 task. This task is managed by the RTOS
+ *             task manager using the multi-task priority scheduling.
+ *             A connection is made with the bluetooth device (RN4678 module)
+ *             after setting up the UART. This glabal uart is then used
+ *             to later send command to the (RN4678 module).
+ *
+ *@param       arg0    xdc data for passing commands to RTOS task
+ *@param       arg1    xdc data for passing commands to RTOS task
+ *
+ * PNB: This is used in the CLI application
+ *
+ *@result      Nothing
+ * */
 void RN4678Fxn(UArg arg0, UArg arg1)
 {
     UART_Params uartParams;
@@ -104,6 +156,12 @@ void RN4678Fxn(UArg arg0, UArg arg1)
     ready_for_data = 1;
 }
 
+/*!
+ * @brief      Setup of the GPIO pins and Peripherable ports for the RN4678 module
+ *
+ *@param       void    nothing
+ *@result      nothing but log and abort of failure to setup task for the BLUE Module
+ * */
 void init_bt()
 {
     Task_Params taskRN4678Params;

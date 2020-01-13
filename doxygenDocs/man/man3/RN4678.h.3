@@ -1,0 +1,281 @@
+.TH "RN4678.h" 3 "Mon Jan 13 2020" "Version 1.0" "copter_project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RN4678.h \- The GPIO setup and data transfer functions for the RN4678 module\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Board\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+\fC#include <driverlib/gpio\&.h>\fP
+.br
+\fC#include <driverlib/pin_map\&.h>\fP
+.br
+\fC#include <driverlib/sysctl\&.h>\fP
+.br
+\fC#include <driverlib/uart\&.h>\fP
+.br
+\fC#include <inc/hw_memmap\&.h>\fP
+.br
+\fC#include <ti/drivers/UART\&.h>\fP
+.br
+\fC#include <ti/sysbios/knl/Task\&.h>\fP
+.br
+\fC#include <xdc/runtime/Error\&.h>\fP
+.br
+\fC#include <xdc/runtime/System\&.h>\fP
+.br
+\fC#include <xdc/std\&.h>\fP
+.br
+
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSW_BTN\fP   GPIO_PIN_2"
+.br
+.ti -1c
+.RI "#define \fBSW_BTN_PORT\fP   GPIO_PORTD_BASE"
+.br
+.ti -1c
+.RI "#define \fBRST\fP   GPIO_PIN_4"
+.br
+.ti -1c
+.RI "#define \fBRST_PORT\fP   GPIO_PORTP_BASE"
+.br
+.ti -1c
+.RI "#define \fBRN4678_RTS\fP   GPIO_PIN_5"
+.br
+.ti -1c
+.RI "#define \fBRN4678_RTS_PORT\fP   GPIO_PORTP_BASE"
+.br
+.ti -1c
+.RI "#define \fBRN4678_CTS\fP   GPIO_PIN_4"
+.br
+.ti -1c
+.RI "#define \fBRN4678_CTS_PORT\fP   GPIO_PORTD_BASE"
+.br
+.ti -1c
+.RI "#define \fBU6RX\fP   GPIO_PP0_U6RX"
+.br
+.ti -1c
+.RI "#define \fBU6RX_PIN\fP   GPIO_PIN_0"
+.br
+.ti -1c
+.RI "#define \fBU6RX_PORT\fP   GPIO_PORTP_BASE"
+.br
+.ti -1c
+.RI "#define \fBU6TX\fP   GPIO_PP1_U6TX"
+.br
+.ti -1c
+.RI "#define \fBU6TX_PIN\fP   GPIO_PIN_1"
+.br
+.ti -1c
+.RI "#define \fBU6TX_PORT\fP   GPIO_PORTP_BASE"
+.br
+.ti -1c
+.RI "#define \fBWAKEUP\fP   GPIO_PIN_7"
+.br
+.ti -1c
+.RI "#define \fBWAKEUP_PORT\fP   GPIO_PORTM_BASE"
+.br
+.ti -1c
+.RI "#define \fBSTATUS1\fP   GPIO_PIN_3"
+.br
+.ti -1c
+.RI "#define \fBSTATUS1_PORT\fP   GPIO_PORTQ_BASE"
+.br
+.ti -1c
+.RI "#define \fBSTATUS2\fP   GPIO_PIN_0"
+.br
+.ti -1c
+.RI "#define \fBSTATUS2_PORT\fP   GPIO_PORTQ_BASE"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBinit_bt\fP ()"
+.br
+.RI "Setup of the GPIO pins and Peripherable ports for the RN4678 module\&. "
+.ti -1c
+.RI "void \fBsend_pac\fP (char *data, size_t size)"
+.br
+.RI "This is used to send Multiwii command to the quadcopter via bluetooth\&. The header and the command are packed in one packet of bytes\&. Activate the GPIO port for sending data check if port is ready and send data using UART write and wait till bytes is completely written and turnoff GPIO pin\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBAuthor\fP
+.RS 4
+Alexander Österreicher es19m008 
+.PP
+Dennis Kwame Addo es19m006
+.RE
+.PP
+More information about the project can be found here 
+.PP
+\fBSee also\fP
+.RS 4
+https://embsys.technikum-wien.at/mio/mes/1/esw/project/project.html#_documentation
+.RE
+.PP
+\fBDate\fP
+.RS 4
+06\&.12\&.2019
+.RE
+.PP
+\fBVersion\fP
+.RS 4
+1\&.0
+.RE
+.PP
+\fBTodo\fP
+.RS 4
+All implentations must be contained in one method structure unless these functions @ are required by other programs/methods
+.RE
+.PP
+
+.PP
+Definition in file \fBRN4678\&.h\fP\&.
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define RN4678_CTS   GPIO_PIN_4"
+is RTS from TivaBoard 
+.br
+ 
+.PP
+Definition at line 52 of file RN4678\&.h\&.
+.SS "#define RN4678_CTS_PORT   GPIO_PORTD_BASE"
+
+.PP
+Definition at line 53 of file RN4678\&.h\&.
+.SS "#define RN4678_RTS   GPIO_PIN_5"
+is CTS from TivaBoard 
+.PP
+Definition at line 50 of file RN4678\&.h\&.
+.SS "#define RN4678_RTS_PORT   GPIO_PORTP_BASE"
+
+.PP
+Definition at line 51 of file RN4678\&.h\&.
+.SS "#define RST   GPIO_PIN_4"
+
+.PP
+Definition at line 48 of file RN4678\&.h\&.
+.SS "#define RST_PORT   GPIO_PORTP_BASE"
+
+.PP
+Definition at line 49 of file RN4678\&.h\&.
+.SS "#define STATUS1   GPIO_PIN_3"
+
+.PP
+Definition at line 62 of file RN4678\&.h\&.
+.SS "#define STATUS1_PORT   GPIO_PORTQ_BASE"
+
+.PP
+Definition at line 63 of file RN4678\&.h\&.
+.SS "#define STATUS2   GPIO_PIN_0"
+
+.PP
+Definition at line 64 of file RN4678\&.h\&.
+.SS "#define STATUS2_PORT   GPIO_PORTQ_BASE"
+
+.PP
+Definition at line 65 of file RN4678\&.h\&.
+.SS "#define SW_BTN   GPIO_PIN_2"
+--------------------------------------------------------------- defines -- 
+.PP
+Definition at line 46 of file RN4678\&.h\&.
+.SS "#define SW_BTN_PORT   GPIO_PORTD_BASE"
+
+.PP
+Definition at line 47 of file RN4678\&.h\&.
+.SS "#define U6RX   GPIO_PP0_U6RX"
+
+.PP
+Definition at line 54 of file RN4678\&.h\&.
+.SS "#define U6RX_PIN   GPIO_PIN_0"
+
+.PP
+Definition at line 55 of file RN4678\&.h\&.
+.SS "#define U6RX_PORT   GPIO_PORTP_BASE"
+
+.PP
+Definition at line 56 of file RN4678\&.h\&.
+.SS "#define U6TX   GPIO_PP1_U6TX"
+
+.PP
+Definition at line 57 of file RN4678\&.h\&.
+.SS "#define U6TX_PIN   GPIO_PIN_1"
+
+.PP
+Definition at line 58 of file RN4678\&.h\&.
+.SS "#define U6TX_PORT   GPIO_PORTP_BASE"
+
+.PP
+Definition at line 59 of file RN4678\&.h\&.
+.SS "#define WAKEUP   GPIO_PIN_7"
+
+.PP
+Definition at line 60 of file RN4678\&.h\&.
+.SS "#define WAKEUP_PORT   GPIO_PORTM_BASE"
+
+.PP
+Definition at line 61 of file RN4678\&.h\&.
+.SH "Function Documentation"
+.PP 
+.SS "void init_bt ()"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIvoid\fP nothing 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+nothing but log and abort of failure to setup task for the BLUE Module 
+.RE
+.PP
+
+.PP
+Definition at line 165 of file RN4678\&.c\&.
+.PP
+References RN4678_CTS, RN4678_CTS_PORT, RN4678_RTS, RN4678_RTS_PORT, RN4678Fxn(), RST, RST_PORT, STATUS1, STATUS1_PORT, STATUS2, STATUS2_PORT, SW_BTN, SW_BTN_PORT, U6RX, U6RX_PIN, U6TX, U6TX_PIN, U6TX_PORT, WAKEUP, and WAKEUP_PORT\&.
+.PP
+Referenced by main()\&.
+.SS "void send_pac (char * data, size_t size)"
+
+.PP
+\fBParameters\fP
+.RS 4
+\fIdata\fP Multiwii package in bytes to send\&. 
+.br
+\fIsize\fP Total size of data to send\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Nothing 
+.RE
+.PP
+
+.PP
+Definition at line 37 of file RN4678\&.c\&.
+.PP
+References RN4678_CTS, RN4678_CTS_PORT, RN4678_RTS, RN4678_RTS_PORT, and uart\&.
+.PP
+Referenced by set_flight_controls()\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for copter_project from the source code\&.

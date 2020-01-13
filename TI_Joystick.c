@@ -1,11 +1,25 @@
-/*
- * TI_Joystick.c
+/**
+ * @file TI_Joystick.c
  *
- *  Created on: 18 Dec 2019
- *      Author: addod
+ *
+ *@brief Application for getting Joystick data, x y-axis ADC values, accelerometer
+ *       and converting them to the right values for controlling the quadcopter
+ *
+ * @author Alexander Österreicher  es19m008
+ * @author Dennis Kwame Addo       es19m006
+ * @date 18.12.2019
+ *
+ * @details More information about the project can be found here
+ * @see https://embsys.technikum-wien.at/mio/mes/1/esw/project/project.html#_documentation
+ *
+ * @version 1.0
+ *
+ *
  */
 
-
+/*\include
+ * -------------------------------------------------------------- includes --
+ */
 #include <TI_Joystick.h>
 
 #include "driverlib/debug.h"
@@ -42,6 +56,16 @@ void arm();
 void disarm();
 
 
+/*!
+ * @brief      This is Joystick middle button.
+ *             Using simple Interrupt for arm and disarm function
+ *
+ *@param       index    the button ID
+ *
+ * PNB:
+ *
+ *@result      Nothing
+ * */
 void gpioSeLFxn0(unsigned int index)
 {
     // JoyStick Select Button
@@ -63,6 +87,14 @@ void gpioSeLFxn0(unsigned int index)
         }
 }
 
+/*!
+ * @brief      Set up the GPIO port and pins for the ADC driver
+ *             which is used to read the ADC value for the x, y-axis, and accelerometer values
+ *             of the EDUMIKI Joystick controller
+ *
+ *@param       void    nothing
+ *@result
+ * */
 void EdM_ADC_Init(void)
 {
     /*
@@ -103,6 +135,13 @@ void EdM_ADC_Init(void)
     ADCSequenceEnable(JOyACC_ADC_BASE, 2);
 }
 
+/*!
+ * @brief      Set up task for the Joystick controller with the hight
+ *             task priority for fast pulling of the ADC values
+ *
+ *@param       void    nothing
+ *@result
+ * */
 void setUpJoyStick_Task(void)
 {
 
@@ -124,6 +163,19 @@ void setUpJoyStick_Task(void)
 }
 
 
+/*!
+ * @brief      This is the joystick RTOS task, also used
+ *              for processing Joystick and accelerometer data. The ADC values needs to be
+ *              processed to limit input signal to the upper and lower saturation values.
+ *              set_flight_controls is then called to get data to the quadcopter by
+ *              sending payload to the quadcopter via the send_pac function
+ *
+ *@param       arg0   xdc argument to the RTOS task.
+ *
+ * PNB:
+ *
+ *@result      Nothing
+ * */
 void joystick_fnx(UArg arg0 )
 {
     uint32_t adcSamples[6];
@@ -223,7 +275,12 @@ void joystick_fnx(UArg arg0 )
     }
 }
 
-
+/*!
+ * @brief     To start the quadcopter  spinning
+ *
+ *@param       void    nothing
+ *@result
+ * */
 void arm()
 {
 #ifdef _DEBUG
@@ -236,7 +293,12 @@ void arm()
 
 }
 
-
+/*!
+ * @brief     To stop the quadcopter  spinning
+ *
+ *@param       void    nothing
+ *@result
+ * */
 void disarm()
 {
 #ifdef _DEBUG
@@ -248,6 +310,14 @@ void disarm()
 }
 
 
+/*!
+ * @brief     Create a multi-wii packet from the controller
+ *            values to control the quadcopter. send the
+ *            payload to quadcopter via the Bluetooth module.
+ *
+ *@param       void    nothing
+ *@result
+ * */
 void set_flight_controls(){
 
     uint8_t armdata[2];

@@ -17,5 +17,14 @@ firmware wants you to use the http://myrobotlab.org/service/multiwii[MULTI WII] 
 the communication protocol to can be found http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol[here]. The user interface will be realized
 using a Texas Instruments Educational Boosterpack MKII offering various interface capabilities.
 
+
+==  Documentation
+Three different documentations were generated in the documentation folder https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs[doxygenDocs]
+
+1. https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/html[html]
+2. https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/man[man]
+3. https://github.com/ic16b011/copter_project/tree/quadcopter_base_public/doxygenDocs/rtf[rtf]
+
+
 == Video Demo
 
