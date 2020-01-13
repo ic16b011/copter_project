@@ -35,10 +35,9 @@
 
 /*!
  * @brief      The Entry point of the quadcopter application.
- *             Setting up board specific pins/GPIO init and setup the RN468 GPIO
- *             to kick up the BLUETH Modules( with RTOS task).
+ *             Setting up board specific pins/GPIO init and initialize the RN4678 in a RTOS Task.
  *             ADC initialization and setup of the task for Joystick data processing
- *             to feed to the quadcopter ver the BLUETH.
+ *             to feed to the quadcopter over the BLUETOOTH.
  *
  *@param       void    nothing
  *@result Jump to RTOS tasks manager from BIOS and EXIT_FAILURE on failure (Error trap function)
@@ -53,7 +52,7 @@ int main(void)
 
     Board_initGPIO();
 
-    // initialize the RN4678 and start the communication task
+    // initialize the RN4678
     init_bt();
 #ifdef _DEBUG
     System_printf("Created RN4678 Task\n");

@@ -276,7 +276,7 @@ void joystick_fnx(UArg arg0 )
 }
 
 /*!
- * @brief     To start the quadcopter  spinning
+ * @brief     To stop the quadcopter  spinning
  *
  *@param       void    nothing
  *@result
@@ -294,7 +294,7 @@ void arm()
 }
 
 /*!
- * @brief     To stop the quadcopter  spinning
+ * @brief     To start the quadcopter  spinning
  *
  *@param       void    nothing
  *@result

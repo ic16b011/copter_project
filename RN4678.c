@@ -17,17 +17,15 @@
  */
 #include "RN4678.h"
 
-/*! uart   Global UART handler for UART write command */
+/*! uart   Global UART handler for UART reading/writing */
 UART_Handle uart;
-/*! ready_for_data   Global 8 bit variable for controlling the data transfer */
+/*! ready_for_data   Global 8 bit variable for signalling that the copter is ready for receiving data */
 uint8_t ready_for_data = 0;
 
 /*!
  * @brief      This is used to send Multiwii command to the quadcopter via bluetooth.
  *             The header and the command are packed in one packet of bytes.
- *             Activate the GPIO port for sending data check if port is ready and
- *             send data using UART write and wait till bytes is completely written and turnoff
- *             GPIO pin.
+ *             UART Flow Control is used and implemented in the Software for the communication with the RN4678.
  *
  *@param       data    Multiwii package in bytes to send.
  *@param       size    Total size of data to send.
@@ -44,16 +42,15 @@ void send_pac(char *data, size_t size)
 }
 
 /*!
- * @brief      This is used to send Multiwii command to the quadcopter via bluetooth.
- *             The header and the command are packed in one packet of bytes.
- *             Activate the GPIO port for sending data check if port is ready and
- *             send data using UART write and wait till bytes is completely written and turnoff
- *             GPIO pin.
+ * @brief      This is used to send commands to the RN4678 for setting up the communication via bluetooth.
+ *             UART Flow Control is used and implemented in the Software for the communication with the RN4678.
+ *             In the initialization phase every command sent to the RN4678 is answered by the module.
+ *             This answer is read and returned to the calling function.
  *
- *@param       cmd     Command to send to the quadcopter
+ *@param       cmd     Command to send to the RN4678
  *@param       size    Total size of data to send.
  *@param       retsize Total size of the return bytes (input data).
- *@param       input   Input data from the commandline.
+ *@param       input   Answer from the RN4678.
  *
  * PNB: This is used in the CLI application
  *
@@ -77,11 +74,10 @@ void start_com(char *cmd, uint8_t size, uint8_t retsize, char *input)
 }
 
 /*!
- * @brief      This is RN4678 task. This task is managed by the RTOS
+ * @brief      This is RN4678 initialization task. This task is managed by the RTOS
  *             task manager using the multi-task priority scheduling.
- *             A connection is made with the bluetooth device (RN4678 module)
- *             after setting up the UART. This glabal uart is then used
- *             to later send command to the (RN4678 module).
+ *             A connection is set up with the bluetooth device (RN4678 module)
+ *             after setting up the UART. The command mode of the RN4678 is used to connect it to the quadcopter.
  *
  *@param       arg0    xdc data for passing commands to RTOS task
  *@param       arg1    xdc data for passing commands to RTOS task
@@ -157,7 +153,7 @@ void RN4678Fxn(UArg arg0, UArg arg1)
 }
 
 /*!
- * @brief      Setup of the GPIO pins and Peripherable ports for the RN4678 module
+ * @brief      Setup of the GPIO pins and Peripherable ports for the RN4678 module and initialize the RN4678.
  *
  *@param       void    nothing
  *@result      nothing but log and abort of failure to setup task for the BLUE Module
