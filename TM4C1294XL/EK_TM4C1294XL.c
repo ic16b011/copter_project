@@ -97,8 +97,11 @@ static Hwi_Struct dmaHwiStruct;
  */
 static Void dmaErrorHwi(UArg arg)
 {
+#ifdef _DEBUG
     System_printf("DMA error code: %d\n", uDMAErrorStatusGet());
+#endif
     uDMAErrorStatusClear();
+
     System_abort("DMA error!!");
 }
 
@@ -239,8 +242,10 @@ void EK_TM4C1294XL_initEMAC(char *mac_addr)
     if(mac_addr == NULL) {
         FlashUserGet(&ulUser0, &ulUser1);
         if ((ulUser0 != 0xffffffff) && (ulUser1 != 0xffffffff)) {
+#ifdef _DEBUG
             System_printf("Using MAC address in flash\n");
             System_flush();
+#endif
             /*
              *  Convert the 24/24 split MAC address from NV ram into a 32/16 split MAC
              *  address needed to program the hardware registers, then program the MAC
@@ -257,8 +262,10 @@ void EK_TM4C1294XL_initEMAC(char *mac_addr)
         }
     } else {
         memcpy(macAddress,mac_addr,6);
+#ifdef _DEBUG
         System_printf("Using user supplied MAC address\n");
         System_flush();
+#endif
     }
 
     GPIOPinConfigure(GPIO_PF0_EN0LED0);  /* EK_TM4C1294XL_USR_D3 */
