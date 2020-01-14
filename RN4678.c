@@ -106,7 +106,9 @@ void RN4678Fxn(UArg arg0, UArg arg1)
 
     uart = UART_open(Board_UART6, &uartParams);
 
-    if (uart == NULL) {
+    if (uart == NULL)
+    {
+
         System_abort("Error opening the UART");
     }
 
